@@ -9,8 +9,8 @@ import { AuthProvider } from "react-oidc-context";
 const cognitoAuthConfig = {
   authority: import.meta.env.VITE_COGNITO_AUTHORITY,
   client_id: import.meta.env.VITE_COGNITO_CLIENT_ID,
-  redirect_uri: "http://localhost:5173/",
-  logout_uri: "http://localhost:5173/login",
+  redirect_uri: import.meta.env.VITE_AMPLIFY_DOMAIN,
+  logout_uri: import.meta.env.VITE_AMPLIFY_SIGN_OUT,
   client_secret: import.meta.env.VITE_COGNITO_CLIENT_SECRET,
   response_type: "code",
   scope: "email openid phone",
