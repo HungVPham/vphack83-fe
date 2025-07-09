@@ -8,15 +8,8 @@ frontend:
         - npm ci --cache .npm --prefer-offline
     build:
       commands:
-        - echo "Building for environment: $AWS_BRANCH"
-        - |
-          if [ "$AWS_BRANCH" = "main" ]; then
-            echo "Production build"
-            npm run build
-          else
-            echo "Development build"
-            npm run build
-          fi
+        - echo "Building for environment - $AWS_BRANCH"
+        - npm run build
   artifacts:
     baseDirectory: dist
     files:
