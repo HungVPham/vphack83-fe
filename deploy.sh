@@ -43,9 +43,11 @@ if [ "$DEV_BEHIND" -gt 0 ]; then
 fi
 
 # Run tests (if they exist)
-if [ -f "package.json" ] && npm run test --if-present > /dev/null 2>&1; then
+if [ -f "package.json" ] && grep -q '"test"' package.json; then
     echo -e "${YELLOW}🧪 Running tests...${NC}"
     npm test
+else
+    echo -e "${YELLOW}⚠️  No test script found, skipping tests...${NC}"
 fi
 
 # Build the project to ensure it compiles
