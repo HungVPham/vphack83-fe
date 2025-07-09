@@ -40,7 +40,7 @@ const cognitoAuthConfig = {
   response_mode: "query",
   
   // Callbacks
-  onSigninCallback: (user: any) => {
+  onSigninCallback: () => {
     // Clean up the URL by removing query parameters and fragments
     window.history.replaceState({}, document.title, window.location.pathname);
   },
