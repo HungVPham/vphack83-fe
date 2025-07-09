@@ -5,30 +5,50 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import { AuthProvider } from "react-oidc-context";
+import { WebStorageStateStore } from "oidc-client-ts";
 
 const cognitoAuthConfig = {
   authority: import.meta.env.VITE_COGNITO_AUTHORITY,
   client_id: import.meta.env.VITE_COGNITO_CLIENT_ID,
   redirect_uri: import.meta.env.VITE_AMPLIFY_DOMAIN,
-  logout_uri: import.meta.env.VITE_AMPLIFY_SIGN_OUT,
+  post_logout_redirect_uri: import.meta.env.VITE_AMPLIFY_SIGN_OUT,
   client_secret: import.meta.env.VITE_COGNITO_CLIENT_SECRET,
   response_type: "code",
   scope: "email openid phone",
-  onSigninCallback: (user: any) => {
-    console.log("Sign-in successful:", user);
+  
+  // Silent authentication configuration - crucial for auto-login
+  automaticSilentRenew: true,
+  silent_redirect_uri: import.meta.env.VITE_AMPLIFY_DOMAIN,
+  includeIdTokenInSilentRenew: true,
+  loadUserInfo: true,
+  
+  // Token and session management
+  revokeTokensOnSignout: true,
+  
+  // Additional settings for better reliability with AWS Cognito
+  filterProtocolClaims: true,
+  clockSkew: 300, // 5 minutes clock skew tolerance
+  staleStateAge: 900, // 15 minutes
+  
+  // Explicit storage configuration
+  stateStore: new WebStorageStateStore({ store: window.localStorage }),
+  
+  // Additional OIDC settings that might help with Cognito
+  validateSubOnSilentRenew: true,
+  
+  // Add response mode for better compatibility
+  response_mode: "query",
+  
+  // Callbacks
+  onSigninCallback: () => {
+    // Clean up the URL by removing query parameters and fragments
     window.history.replaceState({}, document.title, window.location.pathname);
   },
   onSignoutCallback: () => {
-    console.log("Sign-out successful");
-  },
+    // Clean up any remaining URL parameters
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
 };
-
-// Debug: Log configuration (remove sensitive info in production)
-console.log("Cognito Config:", {
-  authority: cognitoAuthConfig.authority,
-  client_id: cognitoAuthConfig.client_id,
-  redirect_uri: cognitoAuthConfig.redirect_uri,
-});
 
 // Validate environment variables
 if (!cognitoAuthConfig.authority || !cognitoAuthConfig.client_id) {
