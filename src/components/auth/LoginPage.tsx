@@ -74,12 +74,13 @@ export function LoginPage() {
           {/* Logo/Header */}
           <div className="text-center mb-8">
             <div className="flex items-center justify-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-r from-[#015aad] to-[#00b74f] rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-r from-[#015aad]/80 to-[#00b74f]/80 backdrop-blur-sm rounded-lg flex items-center justify-center">
                 <img
                   src="/vpbcredai-logo.png"
                   alt="VPB.CredAI"
                   width={40}
                   height={40}
+                  className="opacity-100"
                 />
               </div>
               <span className="text-2xl font-bold text-gray-800">VPB.CredAI</span>
@@ -128,12 +129,13 @@ export function LoginPage() {
         {/* Logo/Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-10 h-10 bg-gradient-to-r from-[#015aad] to-[#00b74f] rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-r from-[#015aad]/90 to-[#00b74f]/90 backdrop-blur-sm rounded-lg flex items-center justify-center">
               <img
                 src="/vpbcredai-logo.png"
                 alt="VPB.CredAI"
                 width={40}
                 height={40}
+                className="opacity-100"
               />
             </div>
             <span className="text-2xl font-bold text-gray-800">VPB.CredAI</span>

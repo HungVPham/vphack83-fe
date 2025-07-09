@@ -39,8 +39,8 @@ export function Header() {
     <div className="max-w-7xl mx-auto mb-8">
       <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm">
         <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-gradient-to-r from-[#015aad] to-[#00b74f] rounded-lg flex items-center justify-center">
-            <img src="/vpbcredai-logo.png" alt="" width={32} height={32} />
+          <div className="w-8 h-8 bg-gradient-to-r from-[#015aad]/90 to-[#00b74f]/90 backdrop-blur-sm rounded-lg flex items-center justify-center">
+            <img src="/vpbcredai-logo.png" alt="" width={32} height={32} className="opacity-100"/>
           </div>
           <span className="font-semibold text-gray-800">VPB.CredAI</span>
         </div>
