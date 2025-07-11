@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useAuth } from "react-oidc-context";
+import LanguageToggle from "../ui/language-toggle";
+import { useLanguage } from "../../lib/LanguageContext";
 
 export function Header() {
   const auth = useAuth();
+  const { t } = useLanguage();
 
   const signOutRedirect = () => {
     const clientId = import.meta.env.VITE_COGNITO_CLIENT_ID;
@@ -15,7 +18,7 @@ export function Header() {
 
   const handleLogout = () => {
     // Show confirmation dialog
-    const confirmLogout = window.confirm("Bạn có chắc chắn muốn đăng xuất?");
+    const confirmLogout = window.confirm(t('header.logout.confirm'));
     
     if (!confirmLogout) {
       return;
@@ -31,7 +34,7 @@ export function Header() {
     } catch (error) {
       console.error("Logout error:", error);
       setIsLoggingOut(false);
-      alert("Có lỗi xảy ra khi đăng xuất. Vui lòng thử lại.");
+      alert(t('header.logout.error'));
     }
   };
 
@@ -44,24 +47,44 @@ export function Header() {
           </div>
           <span className="font-semibold text-gray-800">VPB.CredAI</span>
         </div>
-        <button 
-          onClick={handleLogout}
-          disabled={isLoggingOut}
-          className={`flex items-center space-x-2 text-sm transition-colors ${
-            isLoggingOut 
-              ? 'text-gray-400 cursor-not-allowed' 
-              : 'text-gray-600 hover:text-gray-800 cursor-pointer'
-          }`}
-        >
-          {isLoggingOut ? (
-            <>
-              <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
-              <span>Đang đăng xuất...</span>
-            </>
-          ) : (
-            <span>Đăng xuất</span>
-          )}
-        </button>
+        
+        <div className="flex items-center space-x-2">
+          {/* Language Toggle */}
+          <LanguageToggle />
+          
+          {/* Logout Button with Exit Icon */}
+          <button 
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            className={`flex items-center space-x-3 text-sm transition-colors ${
+              isLoggingOut 
+                ? 'text-gray-400 cursor-not-allowed' 
+                : 'text-gray-600 hover:text-gray-800 cursor-pointer'
+            }`}
+          >
+            {isLoggingOut ? (
+              <>
+                <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+                <span>{t('header.logout.loading')}</span>
+              </>
+            ) : (
+              <svg 
+                className="w-[1.790rem] h-[1.790rem]" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" 
+                />
+              </svg>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { CheckCircle, Check, ArrowRight } from "lucide-react";
+import { useLanguage } from "../../lib/LanguageContext";
 
 interface ScoreData {
   score: number;
@@ -9,9 +10,35 @@ interface ScoreData {
   labelColor: string;
 }
 
-export function CreditScoreResults() {
-  const currentScore = 100;
-  const maxScore = 100;
+// Types for dynamic content from Lambda
+interface LambdaResponse {
+  score: number;
+  maxScore: number;
+  explanation: {
+    vi: string;
+    en: string;
+  };
+  strengths: {
+    vi: string[];
+    en: string[];
+  };
+  suggestions: {
+    vi: string[];
+    en: string[];
+  };
+}
+
+interface CreditScoreResultsProps {
+  // For demo purposes, we'll use mock data, but in production this would come from Lambda
+  lambdaData?: LambdaResponse;
+}
+
+export function CreditScoreResults({ lambdaData }: CreditScoreResultsProps) {
+  const { t, language } = useLanguage();
+  
+  // Use Lambda data if available, otherwise use mock data for demo
+  const currentScore = lambdaData?.score ?? 100;
+  const maxScore = lambdaData?.maxScore ?? 100;
 
   const getScoreData = (score: number): ScoreData => {
     const percentage = (score / maxScore) * 100;
@@ -21,7 +48,7 @@ export function CreditScoreResults() {
         score,
         maxScore,
         color: "#00b74f",
-        label: "Xuất sắc",
+        label: t('creditScore.excellent'),
         labelColor: "from-[#00b74f] to-[#00b74f]"
       };
     } else if (percentage >= 60) {
@@ -29,7 +56,7 @@ export function CreditScoreResults() {
         score,
         maxScore,
         color: "#90EE90",
-        label: "Rất tốt",
+        label: t('creditScore.veryGood'),
         labelColor: "from-[#90EE90] to-[#00b74f]"
       };
     } else if (percentage >= 40) {
@@ -37,7 +64,7 @@ export function CreditScoreResults() {
         score,
         maxScore,
         color: "#FFD700",
-        label: "Tốt",
+        label: t('creditScore.good'),
         labelColor: "from-[#FFD700] to-[#90EE90]"
       };
     } else if (percentage >= 20) {
@@ -45,7 +72,7 @@ export function CreditScoreResults() {
         score,
         maxScore,
         color: "#FF8C00",
-        label: "Khá",
+        label: t('creditScore.fair'),
         labelColor: "from-[#FF8C00] to-[#FFD700]"
       };
     } else {
@@ -53,7 +80,7 @@ export function CreditScoreResults() {
         score,
         maxScore,
         color: "#E70000",
-        label: "Yếu",
+        label: t('creditScore.poor'),
         labelColor: "from-[#E70000] to-[#FF8C00]"
       };
     }
@@ -80,7 +107,7 @@ export function CreditScoreResults() {
   return (
     <Card className="h-fit">
       <CardHeader className="text-center pb-4">
-        <CardTitle className="text-2xl font-bold text-gray-800">Điểm tín dụng của bạn</CardTitle>
+        <CardTitle className="text-2xl font-bold text-gray-800">{t('creditScore.title')}</CardTitle>
       </CardHeader>
 
       <CardContent className="space-y-8">
@@ -132,17 +159,29 @@ export function CreditScoreResults() {
 
         {/* AI Explanation */}
         <div>
-          <h4 className="text-lg font-semibold text-gray-800 mb-3">Ý nghĩa điểm số của bạn</h4>
+          <h4 className="text-lg font-semibold text-gray-800 mb-3">{t('creditScore.meaningTitle')}</h4>
           <p className="text-sm text-gray-600 leading-relaxed">
-            {percentage >= 80
-              ? "Điểm số của bạn rất tốt, chủ yếu dựa trên lịch sử nghề nghiệp ổn định và việc thanh toán hóa đơn tiện ích đúng hạn. Điều này cho thấy độ tin cậy tài chính cao."
-              : percentage >= 60
-              ? "Điểm số của bạn khá tốt, cho thấy khả năng quản lý tài chính ổn định. Một số cải thiện nhỏ có thể giúp nâng cao điểm số."
-              : percentage >= 40
-              ? "Điểm số của bạn ở mức trung bình. Có nhiều cơ hội để cải thiện hồ sơ tín dụng thông qua việc quản lý tài chính tốt hơn."
-              : percentage >= 20
-              ? "Điểm số của bạn cần được cải thiện. Chúng tôi khuyến nghị bạn tập trung vào việc xây dựng lịch sử tín dụng tích cực."
-              : "Điểm số của bạn cần được cải thiện đáng kể. Hãy bắt đầu với những bước cơ bản để xây dựng hồ sơ tín dụng."
+            {lambdaData?.explanation?.[language] || 
+              (percentage >= 80
+                ? (language === 'vi' 
+                    ? "Điểm số của bạn rất tốt, chủ yếu dựa trên lịch sử nghề nghiệp ổn định và việc thanh toán hóa đơn tiện ích đúng hạn. Điều này cho thấy độ tin cậy tài chính cao."
+                    : "Your score is excellent, mainly based on stable career history and timely utility bill payments. This shows high financial reliability.")
+                : percentage >= 60
+                ? (language === 'vi' 
+                    ? "Điểm số của bạn khá tốt, cho thấy khả năng quản lý tài chính ổn định. Một số cải thiện nhỏ có thể giúp nâng cao điểm số."
+                    : "Your score is quite good, showing stable financial management capabilities. Some minor improvements could help boost your score.")
+                : percentage >= 40
+                ? (language === 'vi' 
+                    ? "Điểm số của bạn ở mức trung bình. Có nhiều cơ hội để cải thiện hồ sơ tín dụng thông qua việc quản lý tài chính tốt hơn."
+                    : "Your score is at an average level. There are many opportunities to improve your credit profile through better financial management.")
+                : percentage >= 20
+                ? (language === 'vi' 
+                    ? "Điểm số của bạn cần được cải thiện. Chúng tôi khuyến nghị bạn tập trung vào việc xây dựng lịch sử tín dụng tích cực."
+                    : "Your score needs improvement. We recommend focusing on building positive credit history.")
+                : (language === 'vi' 
+                    ? "Điểm số của bạn cần được cải thiện đáng kể. Hãy bắt đầu với những bước cơ bản để xây dựng hồ sơ tín dụng."
+                    : "Your score needs significant improvement. Start with the basic steps to build your credit profile.")
+              )
             }
           </p>
         </div>
@@ -152,26 +191,37 @@ export function CreditScoreResults() {
           <div>
             <h5 className="font-semibold text-gray-800 mb-3 flex items-center">
               <CheckCircle className="h-4 w-4 text-[#00b74f] mr-2" />
-              Điểm mạnh
+              {t('creditScore.strengths')}
             </h5>
             <div className="space-y-2">
-              {percentage >= 40 && (
-                <div className="flex items-center text-sm text-gray-600">
-                  <Check className="h-4 w-4 text-[#00b74f] mr-2 flex-shrink-0" />
-                  Thanh toán hóa đơn tiện ích đúng hạn
-                </div>
-              )}
-              {percentage >= 60 && (
-                <div className="flex items-center text-sm text-gray-600">
-                  <Check className="h-4 w-4 text-[#00b74f] mr-2 flex-shrink-0" />
-                  Hoạt động nghề nghiệp ổn định
-                </div>
-              )}
-              {percentage >= 80 && (
-                <div className="flex items-center text-sm text-gray-600">
-                  <Check className="h-4 w-4 text-[#00b74f] mr-2 flex-shrink-0" />
-                  Lịch sử tín dụng tích cực
-                </div>
+              {lambdaData?.strengths?.[language] ? (
+                lambdaData.strengths[language].map((strength, index) => (
+                  <div key={index} className="flex items-center text-sm text-gray-600">
+                    <Check className="h-4 w-4 text-[#00b74f] mr-2 flex-shrink-0" />
+                    {strength}
+                  </div>
+                ))
+              ) : (
+                <>
+                  {percentage >= 40 && (
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Check className="h-4 w-4 text-[#00b74f] mr-2 flex-shrink-0" />
+                      {t('creditScore.strength.utilityPayments')}
+                    </div>
+                  )}
+                  {percentage >= 60 && (
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Check className="h-4 w-4 text-[#00b74f] mr-2 flex-shrink-0" />
+                      {t('creditScore.strength.stableCareer')}
+                    </div>
+                  )}
+                  {percentage >= 80 && (
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Check className="h-4 w-4 text-[#00b74f] mr-2 flex-shrink-0" />
+                      {t('creditScore.strength.positiveCreditHistory')}
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>
@@ -179,26 +229,37 @@ export function CreditScoreResults() {
           <div>
             <h5 className="font-semibold text-gray-800 mb-3 flex items-center">
               <ArrowRight className="h-4 w-4 text-[#015aad] mr-2" />
-              Gợi ý cải thiện
+              {t('creditScore.suggestions')}
             </h5>
             <div className="space-y-2">
-              {percentage < 80 && (
-                <div className="flex items-start text-sm text-gray-600">
-                  <ArrowRight className="h-4 w-4 text-[#015aad] mr-2 flex-shrink-0 mt-0.5" />
-                  Liên kết tài khoản ngân hàng chính để có bức tranh hoàn chỉnh hơn
-                </div>
-              )}
-              {percentage < 60 && (
-                                 <div className="flex items-start text-sm text-gray-600">
-                  <ArrowRight className="h-4 w-4 text-[#015aad] mr-2 flex-shrink-0 mt-0.5" />
-                  Thiết lập thanh toán tự động cho các hóa đơn thường xuyên
-                </div>
-              )}
-              {percentage < 40 && (
-                <div className="flex items-start text-sm text-gray-600">
-                  <ArrowRight className="h-4 w-4 text-[#015aad] mr-2 flex-shrink-0 mt-0.5" />
-                  Xây dựng lịch sử thu nhập ổn định qua các kênh chính thức
-                </div>
+              {lambdaData?.suggestions?.[language] ? (
+                lambdaData.suggestions[language].map((suggestion, index) => (
+                  <div key={index} className="flex items-start text-sm text-gray-600">
+                    <ArrowRight className="h-4 w-4 text-[#015aad] mr-2 flex-shrink-0 mt-0.5" />
+                    {suggestion}
+                  </div>
+                ))
+              ) : (
+                <>
+                  {percentage < 80 && (
+                    <div className="flex items-start text-sm text-gray-600">
+                      <ArrowRight className="h-4 w-4 text-[#015aad] mr-2 flex-shrink-0 mt-0.5" />
+                      {t('creditScore.suggestion.linkBankAccount')}
+                    </div>
+                  )}
+                  {percentage < 60 && (
+                    <div className="flex items-start text-sm text-gray-600">
+                      <ArrowRight className="h-4 w-4 text-[#015aad] mr-2 flex-shrink-0 mt-0.5" />
+                      {t('creditScore.suggestion.autoPayments')}
+                    </div>
+                  )}
+                  {percentage < 40 && (
+                    <div className="flex items-start text-sm text-gray-600">
+                      <ArrowRight className="h-4 w-4 text-[#015aad] mr-2 flex-shrink-0 mt-0.5" />
+                      {t('creditScore.suggestion.buildIncomeHistory')}
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>

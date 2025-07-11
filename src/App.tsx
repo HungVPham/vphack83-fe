@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { CreditScoringApp } from './components/credit-scoring/CreditScoringApp';
 import { LoginPage } from './components/auth/LoginPage';
 import { useAuth } from 'react-oidc-context';
+import { LanguageProvider } from './lib/LanguageContext';
 import './App.css'
 
 function AuthHandler() {
@@ -67,18 +68,20 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
 function App() {  
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<AuthHandler />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/app" element={
-          <ProtectedRoute>
-            <CreditScoringApp />
-          </ProtectedRoute>
-        } />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Router>
+    <LanguageProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<AuthHandler />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/app" element={
+            <ProtectedRoute>
+              <CreditScoringApp />
+            </ProtectedRoute>
+          } />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
+    </LanguageProvider>
   );
 }
 
