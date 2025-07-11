@@ -13,7 +13,6 @@ import { useLanguage } from "../../lib/LanguageContext";
 export function DataInputForm() {
   const { t, interpolate } = useLanguage();
   const [currentStep, setCurrentStep] = useState(1);
-  const [userType, setUserType] = useState<string>("");
 
   const totalSteps = 5;
 

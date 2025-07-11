@@ -1,5 +1,3 @@
-import React from "react";
-
 export interface RadioOption {
   value: string;
   label: string;
