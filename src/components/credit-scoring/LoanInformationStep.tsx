@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
+import { RadioGroup } from "@/components/ui/radio";
+import { useLanguage } from "../../lib/LanguageContext";
 
 const LoanInformationStep = () => {
+  const { t } = useLanguage();
   const [loanType, setLoanType] = useState<"cash" | "revolving">("cash");
   const [loanAmount, setLoanAmount] = useState("");
   const [hasPurchase, setHasPurchase] = useState<"yes" | "no">("no");
@@ -23,43 +26,32 @@ const LoanInformationStep = () => {
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-medium text-gray-800 mb-4">
-          Thông tin về khoản vay
+          {t("loanInfo.title")}
         </h3>
 
         {/* Loan Type Selection */}
         <div className="space-y-4">
           <div className="text-left">
             <Label className="text-sm font-medium text-gray-700 mb-3 block">
-              Loại hình vay
+              {t("loanInfo.loanType")}
             </Label>
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                onClick={() => setLoanType("cash")}
-                className={`p-4 rounded-lg border-2 text-sm font-medium transition-all ${
-                  loanType === "cash"
-                    ? "border-black text-black"
-                    : "border-gray-200 text-gray-600 hover:border-gray-300"
-                }`}
-              >
-                Vay tiền mặt
-              </button>
-              <button
-                onClick={() => setLoanType("revolving")}
-                className={`p-4 rounded-lg border-2 text-sm font-medium transition-all ${
-                  loanType === "revolving"
-                    ? "border-black text-black"
-                    : "border-gray-200 text-gray-600 hover:border-gray-300"
-                }`}
-              >
-                Vay tín dụng tuần hoàn
-              </button>
-            </div>
+            <RadioGroup
+              options={[
+                { value: "cash", label: t("loanInfo.loanType.cash") },
+                { value: "revolving", label: t("loanInfo.loanType.revolving") }
+              ]}
+              value={loanType}
+              onChange={(value) => setLoanType(value as "cash" | "revolving")}
+              name="loanType"
+              direction="horizontal"
+              className="mt-2"
+            />
           </div>
 
           {/* Loan Amount */}
           <div className="text-left">
             <Label htmlFor="loanAmount" className="text-sm font-medium text-gray-700">
-              Số tiền muốn vay
+              {t("loanInfo.loanAmount")}
             </Label>
             <div className="relative mt-1">
               <input
@@ -79,37 +71,26 @@ const LoanInformationStep = () => {
           {/* Purchase Funding Question */}
           <div className="text-left">
             <Label className="text-sm font-medium text-gray-700 mb-3 block">
-              Bạn có dùng khoản vay này để tài trợ cho một khoản mua hàng không?
+              {t("loanInfo.hasPurchase")}
             </Label>
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                onClick={() => setHasPurchase("yes")}
-                className={`p-3 rounded-lg border-2 text-sm font-medium transition-all ${
-                  hasPurchase === "yes"
-                    ? "border-black text-black"
-                    : "border-gray-200 text-gray-600 hover:border-gray-300"
-                }`}
-              >
-                Có
-              </button>
-              <button
-                onClick={() => setHasPurchase("no")}
-                className={`p-3 rounded-lg border-2 text-sm font-medium transition-all ${
-                  hasPurchase === "no"
-                    ? "border-black text-black"
-                    : "border-gray-200 text-gray-600 hover:border-gray-300"
-                }`}
-              >
-                Không
-              </button>
-            </div>
+            <RadioGroup
+              options={[
+                { value: "yes", label: t("loanInfo.hasPurchase.yes") },
+                { value: "no", label: t("loanInfo.hasPurchase.no") }
+              ]}
+              value={hasPurchase}
+              onChange={(value) => setHasPurchase(value as "yes" | "no")}
+              name="hasPurchase"
+              direction="horizontal"
+              className="mt-2"
+            />
           </div>
 
           {/* Purchase Amount (conditionally shown) */}
           {hasPurchase === "yes" && (
             <div className="text-left">
               <Label htmlFor="purchaseAmount" className="text-sm font-medium text-gray-700">
-                Giá trị khoản mua hàng
+                {t("loanInfo.purchaseAmount")}
               </Label>
               <div className="relative mt-1">
                 <input
