@@ -9,9 +9,11 @@ import { ProfessionalProfileStep } from "./ProfessionalProfileStep";
 import { DocumentUploadStep } from "./DocumentUploadStep";
 import LoanInformationStep from "./LoanInformationStep";
 import { useLanguage } from "../../lib/LanguageContext";
+import { FormProvider, useForm } from "../../lib/FormContext";
 
-export function DataInputForm() {
+function DataInputFormContent() {
   const { t, interpolate } = useLanguage();
+  const { submitForm } = useForm();
   const [currentStep, setCurrentStep] = useState(1);
 
   const totalSteps = 5;
@@ -106,8 +108,7 @@ export function DataInputForm() {
           </Button>
 
           <Button
-            onClick={handleNextStep}
-            disabled={currentStep === totalSteps}
+            onClick={currentStep === totalSteps ? submitForm : handleNextStep}
             variant={currentStep === totalSteps ? "default" : "next"}
           >
             {currentStep === totalSteps
@@ -117,5 +118,13 @@ export function DataInputForm() {
         </div>
       </CardContent>
     </Card>
+  );
+}
+
+export function DataInputForm() {
+  return (
+    <FormProvider>
+      <DataInputFormContent />
+    </FormProvider>
   );
 }

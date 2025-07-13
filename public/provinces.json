@@ -1320,7 +1320,9 @@
                 }
             ],
             "population": 8435650,
-            "population_normalized": 0.619867292
+            "population_normalized": 0.619867292,
+            "region_rating": 1,
+            "region_rating_w_city": 1
         },
         {
             "province": "Bắc Ninh",
@@ -2060,7 +2062,9 @@
                 }
             ],
             "population": 3509100,
-            "population_normalized": 0.257855211
+            "population_normalized": 0.257855211,
+            "region_rating": 1,
+            "region_rating_w_city": 1
         },
         {
             "province": "Quảng Ninh",
@@ -2471,7 +2475,10 @@
                 }
             ],
             "population": 1362880,
-            "population_normalized": 0.100146964
+            "population_normalized": 0.100146964,
+            "region_rating": 1,
+            "region_rating_w_city": 1
+
         },
         {
             "province": "Hải Phòng",
@@ -3407,7 +3414,9 @@
                 }
             ],
             "population": 4102700,
-            "population_normalized": 0.301474046
+            "population_normalized": 0.301474046,
+            "region_rating": 1,
+            "region_rating_w_city": 1
         },
         {
             "province": "Hưng Yên",
@@ -4228,7 +4237,9 @@
                 }
             ],
             "population": 3208400,
-            "population_normalized": 0.235759215
+            "population_normalized": 0.235759215,
+            "region_rating": 1,
+            "region_rating_w_city": 1
         },
         {
             "province": "Ninh Bình",
@@ -5199,7 +5210,9 @@
                 }
             ],
             "population": 3818700,
-            "population_normalized": 0.280605197
+            "population_normalized": 0.280605197,
+            "region_rating": 2,
+            "region_rating_w_city": 2
         },
         {
             "province": "Cao Bằng",
@@ -5594,7 +5607,9 @@
                 }
             ],
             "population": 543050,
-            "population_normalized": 0.039904327
+            "population_normalized": 0.039904327,
+            "region_rating": 3, 
+            "region_rating_w_city": 3
         },
         {
             "province": "Tuyên Quang",
@@ -6550,7 +6565,9 @@
                 }
             ],
             "population": 1731600,
-            "population_normalized": 0.127241197
+            "population_normalized": 0.127241197,
+            "region_rating": 3, 
+            "region_rating_w_city": 3
         },
         {
             "province": "Lào Cai",
@@ -7371,7 +7388,9 @@
                 }
             ],
             "population": 1656500,
-            "population_normalized": 0.121722709
+            "population_normalized": 0.121722709,
+            "region_rating": 2,
+            "region_rating_w_city": 2
         },
         {
             "province": "Thái Nguyên",
@@ -8084,7 +8103,10 @@
                 }
             ],
             "population": 1694500,
-            "population_normalized": 0.12451502
+            "population_normalized": 0.12451502,
+            "region_rating": 2, 
+            "region_rating_w_city": 2
+
         },
         {
             "province": "Lạng Sơn",
@@ -8613,7 +8635,9 @@
                 }
             ],
             "population": 802090,
-            "population_normalized": 0.058939069
+            "population_normalized": 0.058939069,
+            "region_rating": 2,
+            "region_rating_w_city": 2
         },
         {
             "province": "Phú Thọ",
@@ -9861,7 +9885,9 @@
                 }
             ],
             "population": 3663600,
-            "population_normalized": 0.269208159
+            "population_normalized": 0.269208159,
+            "region_rating": 2,
+            "region_rating_w_city": 2
         },
         {
             "province": "Điện Biên",
@@ -10220,7 +10246,9 @@
                 }
             ],
             "population": 633980,
-            "population_normalized": 0.046586033
+            "population_normalized": 0.046586033,
+            "region_rating": 3, 
+            "region_rating_w_city": 3
         },
         {
             "province": "Lai Châu",
@@ -10520,7 +10548,9 @@
                 }
             ],
             "population": 482100,
-            "population_normalized": 0.035425607
+            "population_normalized": 0.035425607,
+            "region_rating": 3, 
+            "region_rating_w_city": 3
         },
         {
             "province": "Sơn La",
@@ -11097,7 +11127,9 @@
                 }
             ],
             "population": 1300130,
-            "population_normalized": 0.095535977
+            "population_normalized": 0.095535977,
+            "region_rating": 3,
+            "region_rating_w_city": 3
         },
         {
             "province": "Thanh Hóa",
@@ -12491,7 +12523,9 @@
                 }
             ],
             "population": 3722060,
-            "population_normalized": 0.273503909
+            "population_normalized": 0.273503909,
+            "region_rating": 2,
+            "region_rating_w_city": 2
         },
         {
             "province": "Nghệ An",
@@ -13554,7 +13588,9 @@
                 }
             ],
             "population": 3416900,
-            "population_normalized": 0.251080183
+            "population_normalized": 0.251080183,
+            "region_rating": 2,
+            "region_rating_w_city": 2
         },
         {
             "province": "Hà Tĩnh",
@@ -14079,7 +14115,9 @@
                 }
             ],
             "population": 1317200,
-            "population_normalized": 0.096790312
+            "population_normalized": 0.096790312,
+            "region_rating": 2, 
+            "region_rating_w_city": 2
         },
         {
             "province": "Quảng Trị",
@@ -14723,7 +14761,9 @@
                 }
             ],
             "population": 1584000,
-            "population_normalized": 0.116395274
+            "population_normalized": 0.116395274,
+            "region_rating": 3,
+            "region_rating_w_city": 3
         },
         {
             "province": "Huế",
@@ -15055,7 +15095,9 @@
                 }
             ],
             "population": 1160220,
-            "population_normalized": 0.085255129
+            "population_normalized": 0.085255129,
+            "region_rating": 2,
+            "region_rating_w_city": 1
         },
         {
             "province": "Đà Nẵng",
@@ -15810,7 +15852,9 @@
                 }
             ],
             "population": 2819900,
-            "population_normalized": 0.20721151
+            "population_normalized": 0.20721151,
+            "region_rating": 1,
+            "region_rating_w_city": 1
         },
         {
             "province": "Quảng Ngãi",
@@ -16534,7 +16578,10 @@
                 }
             ],
             "population": 1861700, 
-            "population_normalized": 0.136801187
+            "population_normalized": 0.136801187,
+            "region_rating": 2,
+            "region_rating_w_city": 2
+        
         },
         {
             "province": "Khánh Hòa",
@@ -17060,7 +17107,9 @@
                 }
             ],
             "population": 1882000,
-            "population_normalized": 0.138292869
+            "population_normalized": 0.138292869,
+            "region_rating": 2,
+            "region_rating_w_city": 1
         },
         {
             "province": "Gia Lai",
@@ -18011,7 +18060,9 @@
                 }
             ],
             "population": 3153300,
-            "population_normalized": 0.231710364
+            "population_normalized": 0.231710364,
+            "region_rating": 3,
+            "region_rating_w_city": 3
         },
         {
             "province": "Đắk Lắk",
@@ -18826,7 +18877,10 @@
                 }
             ],
             "population": 2831300,
-            "population_normalized": 0.208049203
+            "population_normalized": 0.208049203,
+            "region_rating": 3,
+            "region_rating_w_city": 2
+
         },
         {
             "province": "Lâm Đồng",
@@ -19768,7 +19822,9 @@
                 }
             ],
             "population": 3324400,
-            "population_normalized": 0.244283111
+            "population_normalized": 0.244283111,
+            "region_rating": 2,
+            "region_rating_w_city": 1
         },
         {
             "province": "Tây Ninh",
@@ -20467,7 +20523,9 @@
                 }
             ],
             "population": 2959000,
-            "population_normalized": 0.217432838
+            "population_normalized": 0.217432838,
+            "region_rating": 2, 
+            "region_rating_w_city": 2
         },
         {
             "province": "Đồng Nai",
@@ -21198,7 +21256,9 @@
                 }
             ],
             "population": 4427700,
-            "population_normalized": 0.325355652
+            "population_normalized": 0.325355652,
+            "region_rating": 1,
+            "region_rating_w_city": 1
         },
         {
             "province": "Hồ Chí Minh",
@@ -22463,7 +22523,9 @@
                 }
             ],
             "population": 13608800,
-            "population_normalized": 1.0
+            "population_normalized": 1.0,
+            "region_rating": 1,
+            "region_rating_w_city": 1
         },
         {
             "province": "Vĩnh Long",
@@ -23442,7 +23504,9 @@
                 }
             ],
             "population": 3367400,
-            "population_normalized": 0.247442831
+            "population_normalized": 0.247442831,
+            "region_rating": 2,
+            "region_rating_w_city": 2
         },
         {
             "province": "Đồng Tháp",
@@ -24259,7 +24323,9 @@
                 }
             ],
             "population": 3397200,
-            "population_normalized": 0.249632591  
+            "population_normalized": 0.249632591,
+            "region_rating": 2,
+            "region_rating_w_city": 2
         },
         {
             "province": "An Giang",
@@ -25076,7 +25142,9 @@
                 }
             ],
             "population": 3679200,
-            "population_normalized": 0.270354477
+            "population_normalized": 0.270354477,
+            "region_rating": 2,
+            "region_rating_w_city": 2
         },
         {
             "province": "Cần Thơ",
@@ -25857,7 +25925,9 @@
                 }
             ],
             "population": 3207000,
-            "population_normalized": 0.23565634
+            "population_normalized": 0.23565634,
+            "region_rating": 1,
+            "region_rating_w_city": 1
         },
         {
             "province": "Cà Mau",
@@ -26368,7 +26438,9 @@
                 }
             ],
             "population": 2140600, 
-            "population_normalized": 0.15729528
+            "population_normalized": 0.15729528,
+            "region_rating": 2,
+            "region_rating_w_city": 2
         }
     ],
     "pagination": {
