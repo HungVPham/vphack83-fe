@@ -1,37 +1,34 @@
-import { useState } from "react";
 import { Label } from "../ui/label";
 import { Select } from "../ui/select";
 import { RadioGroup } from "../ui/radio";
 import { NumberInput } from "../ui/number-input";
 import { useLanguage } from "../../lib/LanguageContext";
+import { useForm } from "../../lib/FormContext";
 
 export function PersonalPropertyStep() {
   const { t } = useLanguage();
-  const [ownsRealty, setOwnsRealty] = useState<string>("no");
-  const [housingType, setHousingType] = useState<string>("");
-  const [ownsVehicle, setOwnsVehicle] = useState<string>("no");
-  const [vehicleAge, setVehicleAge] = useState<number>(1);
+  const { formData, updateFormData } = useForm();
 
   // Realty ownership options
   const realtyOptions = [
-    { value: "no", label: t("personalProperty.ownsRealty.no") },
-    { value: "yes", label: t("personalProperty.ownsRealty.yes") },
+    { value: "N", label: t("personalProperty.ownsRealty.no") },
+    { value: "Y", label: t("personalProperty.ownsRealty.yes") },
   ];
 
   // Vehicle ownership options
   const vehicleOptions = [
-    { value: "no", label: t("personalProperty.ownsVehicle.no") },
-    { value: "yes", label: t("personalProperty.ownsVehicle.yes") },
+    { value: "N", label: t("personalProperty.ownsVehicle.no") },
+    { value: "Y", label: t("personalProperty.ownsVehicle.yes") },
   ];
 
   // Housing type options
   const housingTypeOptions = [
-    { value: "house_apartment", label: t("housing.houseApartment") },
-    { value: "rented_apartment", label: t("housing.rentedApartment") },
-    { value: "with_parents", label: t("housing.withParents") },
-    { value: "municipal_apartment", label: t("housing.municipalApartment") },
-    { value: "office_apartment", label: t("housing.officeApartment") },
-    { value: "coop_apartment", label: t("housing.coopApartment") },
+    { value: "House / apartment", label: t("housing.houseApartment") },
+    { value: "Rented apartment", label: t("housing.rentedApartment") },
+    { value: "With parents", label: t("housing.withParents") },
+    { value: "Municipal apartment", label: t("housing.municipalApartment") },
+    { value: "Office apartment", label: t("housing.officeApartment") },
+    { value: "Co-op apartment", label: t("housing.coopApartment") },
   ];
 
   return (
@@ -45,8 +42,8 @@ export function PersonalPropertyStep() {
             </Label>
             <RadioGroup
               options={realtyOptions}
-              value={ownsRealty}
-              onChange={setOwnsRealty}
+              value={formData.FLAG_OWN_REALTY || ""}
+              onChange={(value) => updateFormData({ FLAG_OWN_REALTY: value as "Y" | "N" })}
               name="ownsRealty"
               direction="horizontal"
               className="mt-2"
@@ -60,8 +57,8 @@ export function PersonalPropertyStep() {
             <Select
               id="housingType"
               options={housingTypeOptions}
-              value={housingType}
-              onChange={setHousingType}
+              value={formData.NAME_HOUSING_TYPE || ""}
+              onChange={(value) => updateFormData({ NAME_HOUSING_TYPE: value })}
               placeholder={t("personalProperty.housingType.placeholder")}
               className="mt-1"
             />
@@ -73,23 +70,23 @@ export function PersonalPropertyStep() {
             </Label>
             <RadioGroup
               options={vehicleOptions}
-              value={ownsVehicle}
-              onChange={setOwnsVehicle}
+              value={formData.FLAG_OWN_CAR || ""}
+              onChange={(value) => updateFormData({ FLAG_OWN_CAR: value as "Y" | "N" })}
               name="ownsVehicle"
               direction="horizontal"
               className="mt-2"
             />
           </div>
 
-          {ownsVehicle === "yes" && (
+          {formData.FLAG_OWN_CAR === "Y" && (
             <div className="text-left">
               <Label htmlFor="vehicleAge" className="text-sm font-medium text-gray-700">
                 {t("personalProperty.vehicleAge")}
               </Label>
               <NumberInput
                 id="vehicleAge"
-                value={vehicleAge}
-                onChange={setVehicleAge}
+                value={formData.OWN_CAR_AGE || 0}
+                onChange={(value) => updateFormData({ OWN_CAR_AGE: value })}
                 min={1}
                 max={100}
                 className="mt-1 w-32"

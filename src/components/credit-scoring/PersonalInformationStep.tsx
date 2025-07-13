@@ -9,6 +9,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { vi } from "date-fns/locale";
 import { useLanguage } from "../../lib/LanguageContext";
+import { useForm } from "../../lib/FormContext";
 
 // Mock API delay function for realistic behavior
 const mockApiDelay = (ms: number = 100) =>
@@ -23,6 +24,10 @@ interface Province {
   province: string;
   id: string;
   wards: Ward[];
+  population: number;
+  population_normalized: number;
+  region_rating: number;
+  region_rating_w_city: number;
 }
 
 interface ProvincesResponse {
@@ -32,16 +37,11 @@ interface ProvincesResponse {
 
 export function PersonalInformationStep() {
   const { t } = useLanguage();
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const { formData, updateFormData } = useForm();
   const [provinces, setProvinces] = useState<Province[]>([]);
   const [wards, setWards] = useState<Ward[]>([]);
   const [isLoadingWards, setIsLoadingWards] = useState(false);
   const [isLoadingProvinces, setIsLoadingProvinces] = useState(false);
-  const [selectedWard, setSelectedWard] = useState<string>("");
-  const [selectedProvince, setSelectedProvince] = useState<string>("");
-  const [selectedGender, setSelectedGender] = useState<string>("M");
-  const [hasChildren, setHasChildren] = useState<string>("no");
-  const [numberOfChildren, setNumberOfChildren] = useState<number>(1);
 
   // Load provinces from local JSON file
   useEffect(() => {
@@ -68,8 +68,7 @@ export function PersonalInformationStep() {
   }, []);
 
   const handleProvinceChange = async (provinceValue: string) => {
-    setSelectedProvince(provinceValue);
-    setSelectedWard(""); // Reset ward selection
+    updateFormData({ province: provinceValue, ward: "" }); // Reset ward selection
     setWards([]); // Clear wards
 
     if (provinceValue && Array.isArray(provinces)) {
@@ -86,6 +85,15 @@ export function PersonalInformationStep() {
         // Use the wards data that's already available in the province object
         if (selectedProvinceObj && selectedProvinceObj.wards) {
           setWards(selectedProvinceObj.wards);
+          
+          // Set region rating fields based on selected province
+          updateFormData({
+            province: provinceValue,
+            ward: "",
+            REGION_POPULATION_RELATIVE: selectedProvinceObj.population_normalized,
+            REGION_RATING_CLIENT: selectedProvinceObj.region_rating,
+            REGION_RATING_CLIENT_W_CITY: selectedProvinceObj.region_rating_w_city
+          });
         }
       } catch (error) {
         console.error("Error loading wards:", error);
@@ -127,6 +135,16 @@ export function PersonalInformationStep() {
     { value: "yes", label: t("personalInfo.hasChildren.yes") },
   ];
 
+  // Family status options
+  const familyStatusOptions = [
+    { value: "Single / not married", label: t("personalInfo.familyStatus.single") },
+    { value: "Married", label: t("personalInfo.familyStatus.married") },
+    { value: "Civil marriage", label: t("personalInfo.familyStatus.civilMarriage") },
+    { value: "Separated", label: t("personalInfo.familyStatus.separated") },
+    { value: "Widow", label: t("personalInfo.familyStatus.widow") },
+    { value: "Unknown", label: t("personalInfo.familyStatus.unknown") },
+  ];
+
   return (
     <div className="space-y-6">
       <div>
@@ -143,6 +161,8 @@ export function PersonalInformationStep() {
             </Label>
             <Input
               id="fullName"
+              value={formData.fullName || ""}
+              onChange={(e) => updateFormData({ fullName: e.target.value })}
               placeholder={t("personalInfo.fullName.placeholder")}
               className="mt-1"
             />
@@ -154,8 +174,8 @@ export function PersonalInformationStep() {
             </Label>
             <RadioGroup
               options={genderOptions}
-              value={selectedGender}
-              onChange={setSelectedGender}
+              value={formData.CODE_GENDER || ""}
+              onChange={(value) => updateFormData({ CODE_GENDER: value })}
               name="gender"
               direction="horizontal"
               className="mt-2"
@@ -163,20 +183,56 @@ export function PersonalInformationStep() {
           </div>
 
           <div className="text-left">
+            <Label
+              htmlFor="email"
+              className="text-sm font-medium text-gray-700"
+            >
+              {t("personalInfo.email")}
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              value={formData.email || ""}
+              onChange={(e) => updateFormData({ email: e.target.value })}
+              placeholder={t("personalInfo.email.placeholder")}
+              className="mt-1"
+            />
+          </div>
+
+          <div className="text-left">
+            <Label
+              htmlFor="familyStatus"
+              className="text-sm font-medium text-gray-700"
+            >
+              {t("personalInfo.familyStatus")}
+            </Label>
+            <Select
+              id="familyStatus"
+              options={familyStatusOptions}
+              value={formData.NAME_FAMILY_STATUS || ""}
+              onChange={(value) => updateFormData({ NAME_FAMILY_STATUS: value })}
+              placeholder={t("personalInfo.familyStatus.placeholder")}
+              className="mt-1"
+            />
+          </div>
+
+
+
+          <div className="text-left">
             <Label className="text-sm font-medium text-gray-700">
               {t("personalInfo.hasChildren")}
             </Label>
             <RadioGroup
               options={hasChildrenOptions}
-              value={hasChildren}
-              onChange={setHasChildren}
+              value={formData.hasChildren || ""}
+              onChange={(value) => updateFormData({ hasChildren: value })}
               name="hasChildren"
               direction="horizontal"
               className="mt-2"
             />
           </div>
 
-          {hasChildren === "yes" && (
+          {formData.hasChildren === "yes" && (
             <div className="text-left">
               <Label
                 htmlFor="numberOfChildren"
@@ -186,8 +242,8 @@ export function PersonalInformationStep() {
               </Label>
               <NumberInput
                 id="numberOfChildren"
-                value={numberOfChildren}
-                onChange={setNumberOfChildren}
+                value={formData.CNT_CHILDREN || 0}
+                onChange={(value) => updateFormData({ CNT_CHILDREN: value })}
                 min={1}
                 max={10}
                 className="mt-1 w-32"
@@ -201,8 +257,32 @@ export function PersonalInformationStep() {
             </Label>
             <div className="relative mt-1">
               <DatePicker
-                selected={selectedDate}
-                onChange={(date) => setSelectedDate(date)}
+                selected={(() => {
+                  if (!formData.DAYS_BIRTH) return null;
+                  // Calculate date by adding days to today (simple date arithmetic)
+                  const today = new Date();
+                  const calculatedDate = new Date(today);
+                  calculatedDate.setDate(today.getDate() + formData.DAYS_BIRTH);
+                
+                  return calculatedDate;
+                })()}
+                onChange={(date) => {                 
+                  if (date) {
+                    // Calculate days difference using simple date arithmetic
+                    const today = new Date();
+                    
+                    // Reset time to midnight for both dates to avoid time-of-day issues
+                    const selectedDateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                    const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                    
+                    const timeDiff = selectedDateOnly.getTime() - todayOnly.getTime();
+                    const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                
+                    updateFormData({ DAYS_BIRTH: daysDiff });
+                  } else {
+                    updateFormData({ DAYS_BIRTH: null });
+                  }
+                }}
                 dateFormat="dd/MM/yyyy"
                 placeholderText="DD/MM/YYYY"
                 maxDate={new Date()}
@@ -232,6 +312,8 @@ export function PersonalInformationStep() {
               </div>
               <Input
                 id="phone"
+                value={formData.phoneNumber || ""}
+                onChange={(e) => updateFormData({ phoneNumber: e.target.value })}
                 placeholder={t("personalInfo.phoneNumber.placeholder")}
                 className="pl-16"
               />
@@ -248,7 +330,7 @@ export function PersonalInformationStep() {
             <Select
               id="province"
               options={provinceOptions}
-              value={selectedProvince}
+              value={formData.province || ""}
               onChange={handleProvinceChange}
               placeholder={
                 isLoadingProvinces ? t("personalInfo.province.loading") : t("personalInfo.province.placeholder")
@@ -267,18 +349,18 @@ export function PersonalInformationStep() {
             <Select
               id="ward"
               options={wardOptions}
-              value={selectedWard}
-              onChange={setSelectedWard}
+              value={formData.ward || ""}
+              onChange={(value) => updateFormData({ ward: value })}
               placeholder={
                 isLoadingWards
                   ? t("personalInfo.ward.loading")
-                  : !selectedProvince
+                  : !formData.province
                   ? t("personalInfo.ward.placeholderNoProvince")
                   : t("personalInfo.ward.placeholder")
               }
-              searchable={!!selectedProvince && !isLoadingWards}
+              searchable={!!formData.province && !isLoadingWards}
               searchPlaceholder={t("personalInfo.ward.searchPlaceholder")}
-              disabled={!selectedProvince || isLoadingWards}
+              disabled={!formData.province || isLoadingWards}
               className="mt-1"
             />
           </div>
@@ -292,6 +374,8 @@ export function PersonalInformationStep() {
             </Label>
             <Input
               id="facebookHandle"
+              value={formData.facebookHandle || ""}
+              onChange={(e) => updateFormData({ facebookHandle: e.target.value })}
               placeholder={t("personalInfo.facebook.placeholder")}
               className="mt-1"
             />

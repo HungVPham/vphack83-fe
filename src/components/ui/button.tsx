@@ -1,36 +1,35 @@
-import { ButtonHTMLAttributes, forwardRef } from 'react';
-import { cn } from '@/lib/utils';
+import { ButtonHTMLAttributes, forwardRef } from "react";
+import { cn } from "@/lib/utils";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'default' | 'outline' | 'ghost' | 'next';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: "default" | "outline" | "ghost" | "next";
+  size?: "sm" | "md" | "lg";
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = 'default', size = 'md', ...props }, ref) => {
-    const baseStyles = 'inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background';
-    
+  ({ className, variant = "default", size = "md", ...props }, ref) => {
+    const baseStyles =
+      "inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background";
+
     const variants = {
-      default: 'bg-gradient-to-r from-[#015aad] to-[#00b74f] text-white hover:from-[#014a92] hover:to-[#009d43]',
-      next: 'bg-[#015aad] text-white hover:bg-[#2c7bc4]',
-      outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-      ghost: 'hover:bg-accent hover:text-accent-foreground'
+      default:
+        "bg-gradient-to-r from-[#015aad] to-[#00b74f] text-white hover:from-[#014a92] hover:to-[#009d43]",
+      next:
+        "text-white hover:opacity-90" + " " + "bg-[#015aad] hover:bg-[#1a6bb8]",
+      outline:
+        "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+      ghost: "hover:bg-accent hover:text-accent-foreground",
     };
 
     const sizes = {
-      sm: 'h-9 px-3 text-sm',
-      md: 'h-10 px-4 py-2',
-      lg: 'h-11 px-8'
+      sm: "h-9 px-3 text-sm",
+      md: "h-10 px-4 py-2",
+      lg: "h-11 px-8",
     };
 
     return (
       <button
-        className={cn(
-          baseStyles,
-          variants[variant],
-          sizes[size],
-          className
-        )}
+        className={cn(baseStyles, variants[variant], sizes[size], className)}
         ref={ref}
         {...props}
       />
@@ -38,6 +37,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   }
 );
 
-Button.displayName = 'Button';
+Button.displayName = "Button";
 
-export { Button }; 
+export { Button };

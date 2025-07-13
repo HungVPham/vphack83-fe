@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Label } from "../ui/label";
 import { Select, SelectOption } from "../ui/select";
 import { useLanguage } from "../../lib/LanguageContext";
+import { useForm } from "../../lib/FormContext";
 
 // Mock API delay function for realistic behavior
 const mockApiDelay = (ms: number = 100) =>
@@ -25,14 +26,14 @@ interface ProvincesResponse {
 
 // Employment type options with Vietnamese localization
 const getEmploymentOptions = (t: (key: string) => string): SelectOption[] => [
-  { value: "working", label: t("employment.working") },
-  { value: "state_servant", label: t("employment.stateServant") },
-  { value: "commercial_associate", label: t("employment.commercialAssociate") },
-  { value: "pensioner", label: t("employment.pensioner") },
-  { value: "unemployed", label: t("employment.unemployed") },
-  { value: "student", label: t("employment.student") },
-  { value: "businessman", label: t("employment.businessman") },
-  { value: "maternity_leave", label: t("employment.maternityLeave") },
+  { value: "Working", label: t("employment.working") },
+  { value: "State servant", label: t("employment.stateServant") },
+  { value: "Commercial associate", label: t("employment.commercialAssociate") },
+  { value: "Pensioner", label: t("employment.pensioner") },
+  { value: "Unemployed", label: t("employment.unemployed") },
+  { value: "Student", label: t("employment.student") },
+  { value: "Businessman", label: t("employment.businessman") },
+  { value: "Maternity leave", label: t("employment.maternityLeave") },
 ];
 
 // Occupation type options
@@ -119,26 +120,20 @@ const getOrganizationOptions = (t: (key: string) => string): SelectOption[] => [
 
 // Education options
 const getEducationOptions = (t: (key: string) => string): SelectOption[] => [
-  { value: "academic_degree", label: t("education.academicDegree") },
-  { value: "higher_education", label: t("education.higherEducation") },
-  { value: "incomplete_higher", label: t("education.incompleteHigher") },
-  { value: "lower_secondary", label: t("education.lowerSecondary") },
-  { value: "secondary_special", label: t("education.secondarySpecial") },
+  { value: "Academic degree", label: t("education.academicDegree") },
+  { value: "Higher education", label: t("education.higherEducation") },
+  { value: "Incomplete higher", label: t("education.incompleteHigher") },
+  { value: "Lower secondary", label: t("education.lowerSecondary") },
+  { value: "Secondary / secondary special", label: t("education.secondarySpecial") },
 ];
 
 export function ProfessionalProfileStep() {
   const { t } = useLanguage();
-  const [userType, setUserType] = useState<string>("");
-  const [monthlyIncome, setMonthlyIncome] = useState<string>("");
-  const [occupationType, setOccupationType] = useState<string>("");
-  const [organizationType, setOrganizationType] = useState<string>("");
-  const [educationType, setEducationType] = useState<string>("");
+  const { formData, updateFormData } = useForm();
   const [workProvinces, setWorkProvinces] = useState<Province[]>([]);
   const [workWards, setWorkWards] = useState<Ward[]>([]);
   const [isLoadingWorkWards, setIsLoadingWorkWards] = useState(false);
   const [isLoadingWorkProvinces, setIsLoadingWorkProvinces] = useState(false);
-  const [selectedWorkWard, setSelectedWorkWard] = useState<string>("");
-  const [selectedWorkProvince, setSelectedWorkProvince] = useState<string>("");
 
   // Get translated options
   const employmentOptions = getEmploymentOptions(t);
@@ -171,8 +166,7 @@ export function ProfessionalProfileStep() {
   }, []);
 
   const handleWorkProvinceChange = async (provinceValue: string) => {
-    setSelectedWorkProvince(provinceValue);
-    setSelectedWorkWard(""); // Reset ward selection
+    updateFormData({ workProvince: provinceValue, workWard: "" }); // Reset ward selection
     setWorkWards([]); // Clear wards
 
     if (provinceValue && Array.isArray(workProvinces)) {
@@ -255,10 +249,10 @@ export function ProfessionalProfileStep() {
             <Select
               id="educationType"
               options={educationOptions}
-              value={educationType}
+              value={formData.NAME_EDUCATION_TYPE || ""}
               placeholder={t("professionalProfile.educationLevel.placeholder")}
               onChange={(value) => {
-                setEducationType(value);
+                updateFormData({ NAME_EDUCATION_TYPE: value });
               }}
               className="mt-1"
             />
@@ -273,10 +267,10 @@ export function ProfessionalProfileStep() {
             <Select
               id="employmentType"
               options={employmentOptions}
-              value={userType}
+              value={formData.NAME_INCOME_TYPE || ""}
               placeholder={t("professionalProfile.employmentStatus.placeholder")}
               onChange={(value) => {
-                setUserType(value);
+                updateFormData({ NAME_INCOME_TYPE: value });
               }}
               className="mt-1"
             />
@@ -293,9 +287,9 @@ export function ProfessionalProfileStep() {
               <input
                 id="monthlyIncome"
                 type="text"
-                value={formatCurrency(monthlyIncome)}
+                value={formatCurrency(formData.incomeMonthly?.toString() || "")}
                 onChange={(e) =>
-                  handleAmountChange(e.target.value, setMonthlyIncome)
+                  handleAmountChange(e.target.value, (value) => updateFormData({ incomeMonthly: parseInt(value) }))
                 }
                 placeholder="0"
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pr-12"
@@ -316,10 +310,10 @@ export function ProfessionalProfileStep() {
             <Select
               id="occupationType"
               options={occupationOptions}
-              value={occupationType}
+              value={formData.OCCUPATION_TYPE || ""}
               placeholder={t("professionalProfile.occupationType.placeholder")}
               onChange={(value) => {
-                setOccupationType(value);
+                updateFormData({ OCCUPATION_TYPE: value });
               }}
               className="mt-1"
             />
@@ -335,10 +329,10 @@ export function ProfessionalProfileStep() {
             <Select
               id="organizationType"
               options={organizationOptions}
-              value={organizationType}
+              value={formData.ORGANIZATION_TYPE || ""}
               placeholder={t("professionalProfile.organizationType.placeholder")}
               onChange={(value) => {
-                setOrganizationType(value);
+                updateFormData({ ORGANIZATION_TYPE: value });
               }}
               className="mt-1"
             />
@@ -354,7 +348,7 @@ export function ProfessionalProfileStep() {
             <Select
               id="workProvince"
               options={workProvinceOptions}
-              value={selectedWorkProvince}
+              value={formData.workProvince || ""}
               onChange={handleWorkProvinceChange}
               placeholder={
                 isLoadingWorkProvinces ? t("common.loading") : t("professionalProfile.workProvince.placeholder")
@@ -373,18 +367,18 @@ export function ProfessionalProfileStep() {
             <Select
               id="workWard"
               options={workWardOptions}
-              value={selectedWorkWard}
-              onChange={setSelectedWorkWard}
+              value={formData.workWard || ""}
+              onChange={(value) => updateFormData({ workWard: value })}
               placeholder={
                 isLoadingWorkWards
                   ? t("common.loading")
-                  : !selectedWorkProvince
+                  : !formData.workProvince
                   ? t("professionalProfile.workWard.placeholderNoProvince")
                   : t("professionalProfile.workWard.placeholder")
               }
-              searchable={!!selectedWorkProvince && !isLoadingWorkWards}
+              searchable={!!formData.workProvince && !isLoadingWorkWards}
               searchPlaceholder={t("common.searchPlaceholder")}
-              disabled={!selectedWorkProvince || isLoadingWorkWards}
+              disabled={!formData.workProvince || isLoadingWorkWards}
               className="mt-1"
             />
           </div>
