@@ -41,12 +41,15 @@ export function Header() {
   return (
     <div className="max-w-7xl mx-auto mb-8">
       <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm">
-        <div className="flex items-center space-x-2">
+        <button 
+          onClick={() => window.location.reload()}
+          className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+        >
           <div className="w-8 h-8 bg-gradient-to-r from-[#015aad]/90 to-[#00b74f]/90 backdrop-blur-sm rounded-lg flex items-center justify-center">
             <img src="/vpbcredai-logo.png" alt="" width={32} height={32} className="opacity-100"/>
           </div>
           <span className="font-semibold text-gray-800">VPB.CredAI</span>
-        </div>
+        </button>
         
         <div className="flex items-center space-x-2">
           {/* Language Toggle */}

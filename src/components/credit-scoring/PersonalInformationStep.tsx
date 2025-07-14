@@ -152,234 +152,217 @@ export function PersonalInformationStep() {
           {t("personalInfo.title")}
         </h3>
         <div className="space-y-4">
-          <div className="text-left">
-            <Label
-              htmlFor="fullName"
-              className="text-sm font-medium text-gray-700"
-            >
-              {t("personalInfo.fullName")}
-            </Label>
-            <Input
-              id="fullName"
-              value={formData.fullName || ""}
-              onChange={(e) => updateFormData({ fullName: e.target.value })}
-              placeholder={t("personalInfo.fullName.placeholder")}
-              className="mt-1"
-            />
-          </div>
-
-          <div className="text-left">
-            <Label className="text-sm font-medium text-gray-700">
-              {t("personalInfo.gender")}
-            </Label>
-            <RadioGroup
-              options={genderOptions}
-              value={formData.CODE_GENDER || ""}
-              onChange={(value) => updateFormData({ CODE_GENDER: value })}
-              name="gender"
-              direction="horizontal"
-              className="mt-2"
-            />
-          </div>
-
-          <div className="text-left">
-            <Label
-              htmlFor="email"
-              className="text-sm font-medium text-gray-700"
-            >
-              {t("personalInfo.email")}
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              value={formData.email || ""}
-              onChange={(e) => updateFormData({ email: e.target.value })}
-              placeholder={t("personalInfo.email.placeholder")}
-              className="mt-1"
-            />
-          </div>
-
-          <div className="text-left">
-            <Label
-              htmlFor="familyStatus"
-              className="text-sm font-medium text-gray-700"
-            >
-              {t("personalInfo.familyStatus")}
-            </Label>
-            <Select
-              id="familyStatus"
-              options={familyStatusOptions}
-              value={formData.NAME_FAMILY_STATUS || ""}
-              onChange={(value) => updateFormData({ NAME_FAMILY_STATUS: value })}
-              placeholder={t("personalInfo.familyStatus.placeholder")}
-              className="mt-1"
-            />
-          </div>
-
-
-
-          <div className="text-left">
-            <Label className="text-sm font-medium text-gray-700">
-              {t("personalInfo.hasChildren")}
-            </Label>
-            <RadioGroup
-              options={hasChildrenOptions}
-              value={formData.hasChildren || ""}
-              onChange={(value) => updateFormData({ hasChildren: value })}
-              name="hasChildren"
-              direction="horizontal"
-              className="mt-2"
-            />
-          </div>
-
-          {formData.hasChildren === "yes" && (
+          {/* Row 1: Full Name and Email */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="text-left">
               <Label
-                htmlFor="numberOfChildren"
+                htmlFor="fullName"
                 className="text-sm font-medium text-gray-700"
               >
-                {t("personalInfo.numberOfChildren")}
+                {t("personalInfo.fullName")}
               </Label>
-              <NumberInput
-                id="numberOfChildren"
-                value={formData.CNT_CHILDREN || 0}
-                onChange={(value) => updateFormData({ CNT_CHILDREN: value })}
-                min={1}
-                max={10}
-                className="mt-1 w-32"
-              />
-            </div>
-          )}
-
-          <div className="text-left">
-            <Label htmlFor="dob" className="text-sm font-medium text-gray-700">
-              {t("personalInfo.dateOfBirth")}
-            </Label>
-            <div className="relative mt-1">
-              <DatePicker
-                selected={(() => {
-                  if (!formData.DAYS_BIRTH) return null;
-                  // Calculate date by adding days to today (simple date arithmetic)
-                  const today = new Date();
-                  const calculatedDate = new Date(today);
-                  calculatedDate.setDate(today.getDate() + formData.DAYS_BIRTH);
-                
-                  return calculatedDate;
-                })()}
-                onChange={(date) => {                 
-                  if (date) {
-                    // Calculate days difference using simple date arithmetic
-                    const today = new Date();
-                    
-                    // Reset time to midnight for both dates to avoid time-of-day issues
-                    const selectedDateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-                    const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-                    
-                    const timeDiff = selectedDateOnly.getTime() - todayOnly.getTime();
-                    const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-                
-                    updateFormData({ DAYS_BIRTH: daysDiff });
-                  } else {
-                    updateFormData({ DAYS_BIRTH: null });
-                  }
-                }}
-                dateFormat="dd/MM/yyyy"
-                placeholderText="DD/MM/YYYY"
-                maxDate={new Date()}
-                showYearDropdown
-                showMonthDropdown
-                dropdownMode="select"
-                locale={vi}
-                popperPlacement="bottom-end"
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pr-10"
-                wrapperClassName="w-full"
-              />
-              <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
-            </div>
-          </div>
-
-          <div className="text-left">
-            <Label
-              htmlFor="phone"
-              className="text-sm font-medium text-gray-700"
-            >
-              {t("personalInfo.phoneNumber")}
-            </Label>
-            <div className="relative mt-1">
-              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
-                <span className="text-sm">🇻🇳</span>
-                <span className="text-sm text-gray-600">+84</span>
-              </div>
               <Input
-                id="phone"
-                value={formData.phoneNumber || ""}
-                onChange={(e) => updateFormData({ phoneNumber: e.target.value })}
-                placeholder={t("personalInfo.phoneNumber.placeholder")}
-                className="pl-16"
+                id="fullName"
+                value={formData.fullName || ""}
+                onChange={(e) => updateFormData({ fullName: e.target.value })}
+                placeholder={t("personalInfo.fullName.placeholder")}
+                className="mt-1"
+              />
+            </div>
+
+            <div className="text-left">
+              <Label
+                htmlFor="email"
+                className="text-sm font-medium text-gray-700"
+              >
+                {t("personalInfo.email")}
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                value={formData.email || ""}
+                onChange={(e) => updateFormData({ email: e.target.value })}
+                placeholder={t("personalInfo.email.placeholder")}
+                className="mt-1"
               />
             </div>
           </div>
 
-          <div className="text-left">
-            <Label
-              htmlFor="province"
-              className="text-sm font-medium text-gray-700"
-            >
-              {t("personalInfo.province")}
-            </Label>
-            <Select
-              id="province"
-              options={provinceOptions}
-              value={formData.province || ""}
-              onChange={handleProvinceChange}
-              placeholder={
-                isLoadingProvinces ? t("personalInfo.province.loading") : t("personalInfo.province.placeholder")
-              }
-              searchable={!isLoadingProvinces}
-              searchPlaceholder={t("personalInfo.province.searchPlaceholder")}
-              disabled={isLoadingProvinces}
-              className="mt-1"
-            />
+          {/* Row 2: Gender and Date of Birth */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="text-left">
+              <Label className="text-sm font-medium text-gray-700">
+                {t("personalInfo.gender")}
+              </Label>
+              <RadioGroup
+                options={genderOptions}
+                value={formData.CODE_GENDER || ""}
+                onChange={(value) => updateFormData({ CODE_GENDER: value })}
+                name="gender"
+                direction="horizontal"
+                className="mt-2"
+              />
+            </div>
+
+            <div className="text-left">
+              <Label htmlFor="dob" className="text-sm font-medium text-gray-700">
+                {t("personalInfo.dateOfBirth")}
+              </Label>
+              <div className="relative mt-1">
+                <DatePicker
+                  selected={(() => {
+                    if (!formData.DAYS_BIRTH) return null;
+                    // Calculate date by adding days to today (simple date arithmetic)
+                    const today = new Date();
+                    const calculatedDate = new Date(today);
+                    calculatedDate.setDate(today.getDate() + formData.DAYS_BIRTH);
+                  
+                    return calculatedDate;
+                  })()}
+                  onChange={(date) => {                 
+                    if (date) {
+                      // Calculate days difference using simple date arithmetic
+                      const today = new Date();
+                      
+                      // Reset time to midnight for both dates to avoid time-of-day issues
+                      const selectedDateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                      const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                      
+                      const timeDiff = selectedDateOnly.getTime() - todayOnly.getTime();
+                      const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                  
+                      updateFormData({ DAYS_BIRTH: daysDiff });
+                    } else {
+                      updateFormData({ DAYS_BIRTH: null });
+                    }
+                  }}
+                  dateFormat="dd/MM/yyyy"
+                  placeholderText="DD/MM/YYYY"
+                  maxDate={new Date()}
+                  showYearDropdown
+                  showMonthDropdown
+                  dropdownMode="select"
+                  locale={vi}
+                  popperPlacement="bottom-end"
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pr-10"
+                  wrapperClassName="w-full"
+                />
+                <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+              </div>
+            </div>
           </div>
 
-          <div className="text-left">
-            <Label htmlFor="ward" className="text-sm font-medium text-gray-700">
-              {t("personalInfo.ward")}
-            </Label>
-            <Select
-              id="ward"
-              options={wardOptions}
-              value={formData.ward || ""}
-              onChange={(value) => updateFormData({ ward: value })}
-              placeholder={
-                isLoadingWards
-                  ? t("personalInfo.ward.loading")
-                  : !formData.province
-                  ? t("personalInfo.ward.placeholderNoProvince")
-                  : t("personalInfo.ward.placeholder")
-              }
-              searchable={!!formData.province && !isLoadingWards}
-              searchPlaceholder={t("personalInfo.ward.searchPlaceholder")}
-              disabled={!formData.province || isLoadingWards}
-              className="mt-1"
-            />
+          {/* Row 3: Family Status and Has Children with Number of Children */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="text-left">
+              <Label
+                htmlFor="familyStatus"
+                className="text-sm font-medium text-gray-700"
+              >
+                {t("personalInfo.familyStatus")}
+              </Label>
+              <Select
+                id="familyStatus"
+                options={familyStatusOptions}
+                value={formData.NAME_FAMILY_STATUS || ""}
+                onChange={(value) => updateFormData({ NAME_FAMILY_STATUS: value })}
+                placeholder={t("personalInfo.familyStatus.placeholder")}
+                className="mt-1"
+              />
+            </div>
+
+            <div className="text-left">
+              <Label className="text-sm font-medium text-gray-700">
+                {t("personalInfo.hasChildren")}
+              </Label>
+              <div className="flex items-center space-x-4 mt-2">
+                <RadioGroup
+                  options={hasChildrenOptions}
+                  value={formData.hasChildren || ""}
+                  onChange={(value) => {
+                    updateFormData({ hasChildren: value });
+                    // Reset number of children when "no" is selected
+                    if (value === "no") {
+                      updateFormData({ CNT_CHILDREN: 0 });
+                    }
+                  }}
+                  name="hasChildren"
+                  direction="horizontal"
+                  className="flex-1"
+                />
+                <div className="flex items-center space-x-2">
+                  <Label
+                    htmlFor="numberOfChildren"
+                    className={`text-sm font-medium ${
+                      formData.hasChildren === "yes" ? "text-gray-700" : "text-gray-400"
+                    }`}
+                  >
+                    {t("personalInfo.numberOfChildren")}:
+                  </Label>
+                  <NumberInput
+                    id="numberOfChildren"
+                    value={formData.CNT_CHILDREN || 0}
+                    onChange={(value) => updateFormData({ CNT_CHILDREN: value })}
+                    min={1}
+                    max={10}
+                    disabled={formData.hasChildren !== "yes"}
+                    className={`w-20 ${
+                      formData.hasChildren !== "yes" ? "opacity-50" : ""
+                    }`}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="text-left">
-            <Label
-              htmlFor="facebookHandle"
-              className="text-sm font-medium text-gray-700"
-            >
-              {t("personalInfo.facebook")}
-            </Label>
-            <Input
-              id="facebookHandle"
-              value={formData.facebookHandle || ""}
-              onChange={(e) => updateFormData({ facebookHandle: e.target.value })}
-              placeholder={t("personalInfo.facebook.placeholder")}
-              className="mt-1"
-            />
+          {/* Row 4: Province and Ward */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="text-left">
+              <Label
+                htmlFor="province"
+                className="text-sm font-medium text-gray-700"
+              >
+                {t("personalInfo.province")}
+              </Label>
+              <Select
+                id="province"
+                options={provinceOptions}
+                value={formData.province || ""}
+                onChange={handleProvinceChange}
+                placeholder={
+                  isLoadingProvinces ? t("personalInfo.province.loading") : t("personalInfo.province.placeholder")
+                }
+                searchable={!isLoadingProvinces}
+                searchPlaceholder={t("personalInfo.province.searchPlaceholder")}
+                disabled={isLoadingProvinces}
+                className="mt-1"
+              />
+            </div>
+
+            <div className="text-left">
+              <Label htmlFor="ward" className="text-sm font-medium text-gray-700">
+                {t("personalInfo.ward")}
+              </Label>
+              <Select
+                id="ward"
+                options={wardOptions}
+                value={formData.ward || ""}
+                onChange={(value) => updateFormData({ ward: value })}
+                placeholder={
+                  isLoadingWards
+                    ? t("personalInfo.ward.loading")
+                    : !formData.province
+                    ? t("personalInfo.ward.placeholderNoProvince")
+                    : t("personalInfo.ward.placeholder")
+                }
+                searchable={!!formData.province && !isLoadingWards}
+                searchPlaceholder={t("personalInfo.ward.searchPlaceholder")}
+                disabled={!formData.province || isLoadingWards}
+                className="mt-1"
+              />
+            </div>
           </div>
+
         </div>
       </div>
     </div>

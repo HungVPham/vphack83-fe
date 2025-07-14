@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { CheckCircle, Check, ArrowRight } from "lucide-react";
 import { useLanguage } from "../../lib/LanguageContext";
+import { useState, useEffect } from "react";
 
 interface ScoreData {
   score: number;
@@ -31,14 +32,31 @@ interface LambdaResponse {
 interface CreditScoreResultsProps {
   // For demo purposes, we'll use mock data, but in production this would come from Lambda
   lambdaData?: LambdaResponse;
+  onStartNewForm?: () => void;
 }
 
-export function CreditScoreResults({ lambdaData }: CreditScoreResultsProps) {
+export function CreditScoreResults({ lambdaData, onStartNewForm }: CreditScoreResultsProps) {
   const { t, language } = useLanguage();
+  const [apiScoreData, setApiScoreData] = useState<any>(null);
   
-  // Use Lambda data if available, otherwise use mock data for demo
-  const currentScore = lambdaData?.score ?? 100;
-  const maxScore = lambdaData?.maxScore ?? 100;
+  // Load API response from localStorage on component mount
+  useEffect(() => {
+    const storedResult = localStorage.getItem('creditScoreResult');
+    if (storedResult) {
+      try {
+        const parsed = JSON.parse(storedResult);
+        setApiScoreData(parsed);
+      } catch (error) {
+        console.error('Error parsing stored credit score result:', error);
+      }
+    }
+  }, []);
+  
+  // Use API data if available, otherwise use lambda data prop, otherwise use mock data for demo
+  const currentScore = apiScoreData?.xgboost_score 
+    ? Math.round(apiScoreData.xgboost_score * 100) // Convert 0.5229 to 52 (out of 100)
+    : lambdaData?.score ?? 100;
+  const maxScore = 100; // Always out of 100 for percentage-based scoring
 
   const getScoreData = (score: number): ScoreData => {
     const percentage = (score / maxScore) * 100;
@@ -264,6 +282,21 @@ export function CreditScoreResults({ lambdaData }: CreditScoreResultsProps) {
             </div>
           </div>
         </div>
+
+        {/* Start New Form Button */}
+        {onStartNewForm && (
+          <div className="pt-6 border-t border-gray-200">
+            <div className="flex justify-center">
+              <button
+                onClick={onStartNewForm}
+                className="inline-flex items-center px-6 py-3 bg-[#015aad] text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
+              >
+                <ArrowRight className="h-4 w-4 mr-2" />
+                {t('creditScore.startNewForm')}
+              </button>
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

@@ -36,63 +36,69 @@ export function PersonalPropertyStep() {
       <div>
         <h3 className="text-lg font-medium text-gray-800 mb-4">{t("personalProperty.title")}</h3>
         <div className="space-y-4">
-          <div className="text-left">
-            <Label className="text-sm font-medium text-gray-700">
-              {t("personalProperty.ownsRealty")}
-            </Label>
-            <RadioGroup
-              options={realtyOptions}
-              value={formData.FLAG_OWN_REALTY || ""}
-              onChange={(value) => updateFormData({ FLAG_OWN_REALTY: value as "Y" | "N" })}
-              name="ownsRealty"
-              direction="horizontal"
-              className="mt-2"
-            />
-          </div>
-
-          <div className="text-left">
-            <Label htmlFor="housingType" className="text-sm font-medium text-gray-700">
-              {t("personalProperty.housingType")}
-            </Label>
-            <Select
-              id="housingType"
-              options={housingTypeOptions}
-              value={formData.NAME_HOUSING_TYPE || ""}
-              onChange={(value) => updateFormData({ NAME_HOUSING_TYPE: value })}
-              placeholder={t("personalProperty.housingType.placeholder")}
-              className="mt-1"
-            />
-          </div>
-
-          <div className="text-left">
-            <Label className="text-sm font-medium text-gray-700">
-              {t("personalProperty.ownsVehicle")}
-            </Label>
-            <RadioGroup
-              options={vehicleOptions}
-              value={formData.FLAG_OWN_CAR || ""}
-              onChange={(value) => updateFormData({ FLAG_OWN_CAR: value as "Y" | "N" })}
-              name="ownsVehicle"
-              direction="horizontal"
-              className="mt-2"
-            />
-          </div>
-
-          {formData.FLAG_OWN_CAR === "Y" && (
+          {/* Row 1: Owns Realty and Owns Vehicle */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="text-left">
-              <Label htmlFor="vehicleAge" className="text-sm font-medium text-gray-700">
-                {t("personalProperty.vehicleAge")}
+              <Label className="text-sm font-medium text-gray-700">
+                {t("personalProperty.ownsRealty")}
               </Label>
-              <NumberInput
-                id="vehicleAge"
-                value={formData.OWN_CAR_AGE || 0}
-                onChange={(value) => updateFormData({ OWN_CAR_AGE: value })}
-                min={1}
-                max={100}
-                className="mt-1 w-32"
+              <RadioGroup
+                options={realtyOptions}
+                value={formData.FLAG_OWN_REALTY || ""}
+                onChange={(value) => updateFormData({ FLAG_OWN_REALTY: value as "Y" | "N" })}
+                name="ownsRealty"
+                direction="horizontal"
+                className="mt-2"
               />
             </div>
-          )}
+
+            <div className="text-left">
+              <Label className="text-sm font-medium text-gray-700">
+                {t("personalProperty.ownsVehicle")}
+              </Label>
+              <RadioGroup
+                options={vehicleOptions}
+                value={formData.FLAG_OWN_CAR || ""}
+                onChange={(value) => updateFormData({ FLAG_OWN_CAR: value as "Y" | "N" })}
+                name="ownsVehicle"
+                direction="horizontal"
+                className="mt-2"
+              />
+            </div>
+          </div>
+
+          {/* Row 2: Housing Type and Vehicle Age */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="text-left">
+              <Label htmlFor="housingType" className="text-sm font-medium text-gray-700">
+                {t("personalProperty.housingType")}
+              </Label>
+              <Select
+                id="housingType"
+                options={housingTypeOptions}
+                value={formData.NAME_HOUSING_TYPE || ""}
+                onChange={(value) => updateFormData({ NAME_HOUSING_TYPE: value })}
+                placeholder={t("personalProperty.housingType.placeholder")}
+                className="mt-1"
+              />
+            </div>
+
+            {formData.FLAG_OWN_CAR === "Y" && (
+              <div className="text-left">
+                <Label htmlFor="vehicleAge" className="text-sm font-medium text-gray-700">
+                  {t("personalProperty.vehicleAge")}
+                </Label>
+                <NumberInput
+                  id="vehicleAge"
+                  value={formData.OWN_CAR_AGE || 0}
+                  onChange={(value) => updateFormData({ OWN_CAR_AGE: value })}
+                  min={1}
+                  max={100}
+                  className="mt-1 w-32"
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

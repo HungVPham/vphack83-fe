@@ -239,43 +239,48 @@ export function ProfessionalProfileStep() {
           {t("professionalProfile.title")}
         </h3>
         <div className="space-y-4">
-          <div className="text-left">
-            <Label
-              htmlFor="educationType"
-              className="text-sm font-medium text-gray-700"
-            >
-              {t("professionalProfile.educationLevel")}
-            </Label>
-            <Select
-              id="educationType"
-              options={educationOptions}
-              value={formData.NAME_EDUCATION_TYPE || ""}
-              placeholder={t("professionalProfile.educationLevel.placeholder")}
-              onChange={(value) => {
-                updateFormData({ NAME_EDUCATION_TYPE: value });
-              }}
-              className="mt-1"
-            />
-          </div>
-          <div className="text-left">
-            <Label
-              htmlFor="employmentType"
-              className="text-sm font-medium text-gray-700"
-            >
-              {t("professionalProfile.employmentStatus")}
-            </Label>
-            <Select
-              id="employmentType"
-              options={employmentOptions}
-              value={formData.NAME_INCOME_TYPE || ""}
-              placeholder={t("professionalProfile.employmentStatus.placeholder")}
-              onChange={(value) => {
-                updateFormData({ NAME_INCOME_TYPE: value });
-              }}
-              className="mt-1"
-            />
+          {/* Row 1: Education Level and Employment Status */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="text-left">
+              <Label
+                htmlFor="educationType"
+                className="text-sm font-medium text-gray-700"
+              >
+                {t("professionalProfile.educationLevel")}
+              </Label>
+              <Select
+                id="educationType"
+                options={educationOptions}
+                value={formData.NAME_EDUCATION_TYPE || ""}
+                placeholder={t("professionalProfile.educationLevel.placeholder")}
+                onChange={(value) => {
+                  updateFormData({ NAME_EDUCATION_TYPE: value });
+                }}
+                className="mt-1"
+              />
+            </div>
+
+            <div className="text-left">
+              <Label
+                htmlFor="employmentType"
+                className="text-sm font-medium text-gray-700"
+              >
+                {t("professionalProfile.employmentStatus")}
+              </Label>
+              <Select
+                id="employmentType"
+                options={employmentOptions}
+                value={formData.NAME_INCOME_TYPE || ""}
+                placeholder={t("professionalProfile.employmentStatus.placeholder")}
+                onChange={(value) => {
+                  updateFormData({ NAME_INCOME_TYPE: value });
+                }}
+                className="mt-1"
+              />
+            </div>
           </div>
 
+          {/* Row 2: Monthly Income */}
           <div className="text-left">
             <Label
               htmlFor="monthlyIncome"
@@ -300,87 +305,93 @@ export function ProfessionalProfileStep() {
             </div>
           </div>
 
-          <div className="text-left">
-            <Label
-              htmlFor="occupationType"
-              className="text-sm font-medium text-gray-700"
-            >
-              {t("professionalProfile.occupationType")}
-            </Label>
-            <Select
-              id="occupationType"
-              options={occupationOptions}
-              value={formData.OCCUPATION_TYPE || ""}
-              placeholder={t("professionalProfile.occupationType.placeholder")}
-              onChange={(value) => {
-                updateFormData({ OCCUPATION_TYPE: value });
-              }}
-              className="mt-1"
-            />
+          {/* Row 3: Occupation Type and Organization Type */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="text-left">
+              <Label
+                htmlFor="occupationType"
+                className="text-sm font-medium text-gray-700"
+              >
+                {t("professionalProfile.occupationType")}
+              </Label>
+              <Select
+                id="occupationType"
+                options={occupationOptions}
+                value={formData.OCCUPATION_TYPE || ""}
+                placeholder={t("professionalProfile.occupationType.placeholder")}
+                onChange={(value) => {
+                  updateFormData({ OCCUPATION_TYPE: value });
+                }}
+                className="mt-1"
+              />
+            </div>
+
+            <div className="text-left">
+              <Label
+                htmlFor="organizationType"
+                className="text-sm font-medium text-gray-700"
+              >
+                {t("professionalProfile.organizationType")}
+              </Label>
+              <Select
+                id="organizationType"
+                options={organizationOptions}
+                value={formData.ORGANIZATION_TYPE || ""}
+                placeholder={t("professionalProfile.organizationType.placeholder")}
+                onChange={(value) => {
+                  updateFormData({ ORGANIZATION_TYPE: value });
+                }}
+                className="mt-1"
+              />
+            </div>
           </div>
 
-          <div className="text-left">
-            <Label
-              htmlFor="organizationType"
-              className="text-sm font-medium text-gray-700"
-            >
-              {t("professionalProfile.organizationType")}
-            </Label>
-            <Select
-              id="organizationType"
-              options={organizationOptions}
-              value={formData.ORGANIZATION_TYPE || ""}
-              placeholder={t("professionalProfile.organizationType.placeholder")}
-              onChange={(value) => {
-                updateFormData({ ORGANIZATION_TYPE: value });
-              }}
-              className="mt-1"
-            />
-          </div>
+          {/* Row 4: Work Province and Work Ward */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="text-left">
+              <Label
+                htmlFor="workProvince"
+                className="text-sm font-medium text-gray-700"
+              >
+                {t("professionalProfile.workProvince")}
+              </Label>
+              <Select
+                id="workProvince"
+                options={workProvinceOptions}
+                value={formData.workProvince || ""}
+                onChange={handleWorkProvinceChange}
+                placeholder={
+                  isLoadingWorkProvinces ? t("common.loading") : t("professionalProfile.workProvince.placeholder")
+                }
+                searchable={!isLoadingWorkProvinces}
+                searchPlaceholder={t("common.searchPlaceholder")}
+                disabled={isLoadingWorkProvinces}
+                className="mt-1"
+              />
+            </div>
 
-          <div className="text-left">
-            <Label
-              htmlFor="workProvince"
-              className="text-sm font-medium text-gray-700"
-            >
-              {t("professionalProfile.workProvince")}
-            </Label>
-            <Select
-              id="workProvince"
-              options={workProvinceOptions}
-              value={formData.workProvince || ""}
-              onChange={handleWorkProvinceChange}
-              placeholder={
-                isLoadingWorkProvinces ? t("common.loading") : t("professionalProfile.workProvince.placeholder")
-              }
-              searchable={!isLoadingWorkProvinces}
-              searchPlaceholder={t("common.searchPlaceholder")}
-              disabled={isLoadingWorkProvinces}
-              className="mt-1"
-            />
-          </div>
-
-          <div className="text-left">
-            <Label htmlFor="workWard" className="text-sm font-medium text-gray-700">
-              {t("professionalProfile.workWard")}
-            </Label>
-            <Select
-              id="workWard"
-              options={workWardOptions}
-              value={formData.workWard || ""}
-              onChange={(value) => updateFormData({ workWard: value })}
-              placeholder={
-                isLoadingWorkWards
-                  ? t("common.loading")
-                  : !formData.workProvince
-                  ? t("professionalProfile.workWard.placeholderNoProvince")
-                  : t("professionalProfile.workWard.placeholder")
-              }
-              searchable={!!formData.workProvince && !isLoadingWorkWards}
-              searchPlaceholder={t("common.searchPlaceholder")}
-              disabled={!formData.workProvince || isLoadingWorkWards}
-              className="mt-1"
-            />
+            <div className="text-left">
+              <Label htmlFor="workWard" className="text-sm font-medium text-gray-700">
+                {t("professionalProfile.workWard")}
+              </Label>
+              <Select
+                id="workWard"
+                options={workWardOptions}
+                value={formData.workWard || ""}
+                onChange={(value) => updateFormData({ workWard: value })}
+                placeholder={
+                  isLoadingWorkWards
+                    ? t("common.loading")
+                    : !formData.workProvince
+                    ? t("professionalProfile.workWard.placeholderNoProvince")
+                    : t("professionalProfile.workWard.placeholder")
+                }
+                searchable={!!formData.workProvince && !isLoadingWorkWards}
+                searchPlaceholder={t("common.searchPlaceholder")}
+                disabled={!formData.workProvince || isLoadingWorkWards}
+                className="mt-1"
+              />
+            </div>
           </div>
         </div>
       </div>

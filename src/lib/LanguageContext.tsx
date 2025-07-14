@@ -49,6 +49,7 @@ const translations = {
     'creditScore.suggestion.linkBankAccount': 'Liên kết tài khoản ngân hàng chính để có bức tranh hoàn chỉnh hơn',
     'creditScore.suggestion.autoPayments': 'Thiết lập thanh toán tự động cho các hóa đơn thường xuyên',
     'creditScore.suggestion.buildIncomeHistory': 'Xây dựng lịch sử thu nhập ổn định qua các kênh chính thức',
+    'creditScore.startNewForm': 'Bắt đầu đánh giá mới',
     
     // Data Input Form
     'dataInputForm.title': 'Đánh giá tín dụng AI',
@@ -144,6 +145,23 @@ const translations = {
     'personalProperty.ownsVehicle.no': 'Không',
     'personalProperty.ownsVehicle.yes': 'Có',
     'personalProperty.vehicleAge': 'Phương tiện di chuyển của bạn đã sử dụng bao lâu? (tháng)',
+
+    // Introduction Section
+    'introduction.title': 'Đánh giá tín dụng AI',
+    'introduction.subtitle': 'Hệ thống đánh giá tín dụng thông minh và chính xác',
+    'introduction.description': 'Chúng tôi sử dụng trí tuệ nhân tạo tiên tiến để đánh giá điểm tín dụng của bạn một cách nhanh chóng, chính xác và công bằng. Quy trình đơn giản chỉ với 5 bước.',
+    'introduction.features.title': 'Tính năng nổi bật',
+    'introduction.features.ai': 'Đánh giá bằng AI tiên tiến',
+    'introduction.features.fast': 'Kết quả nhanh chóng trong vài phút',
+    'introduction.features.secure': 'Bảo mật thông tin tuyệt đối',
+    'introduction.features.accurate': 'Độ chính xác cao với dữ liệu toàn diện',
+    'introduction.button.start': 'Bắt đầu đánh giá',
+    'introduction.steps.title': 'Quy trình đánh giá gồm 5 bước',
+    'introduction.steps.personal': 'Thông tin cá nhân',
+    'introduction.steps.property': 'Thông tin tài sản',
+    'introduction.steps.loan': 'Thông tin khoản vay',
+    'introduction.steps.professional': 'Hồ sơ nghề nghiệp',
+    'introduction.steps.documents': 'Tải lên tài liệu',
 
     // Common
     'common.loading': 'Đang tải...',
@@ -280,6 +298,7 @@ const translations = {
     'creditScore.suggestion.linkBankAccount': 'Link your primary bank account for a more complete picture',
     'creditScore.suggestion.autoPayments': 'Set up automatic payments for regular bills',
     'creditScore.suggestion.buildIncomeHistory': 'Build stable income history through official channels',
+    'creditScore.startNewForm': 'Start New Assessment',
     
     // Data Input Form
     'dataInputForm.title': 'AI Credit Assessment',
@@ -375,6 +394,23 @@ const translations = {
     'personalProperty.ownsVehicle.no': 'No',
     'personalProperty.ownsVehicle.yes': 'Yes',
     'personalProperty.vehicleAge': 'How long have you used your vehicle? (months)',
+
+    // Introduction Section
+    'introduction.title': 'AI Credit Assessment',
+    'introduction.subtitle': 'Smart and accurate credit scoring system',
+    'introduction.description': 'We use advanced artificial intelligence to assess your credit score quickly, accurately and fairly. Simple process with just 5 steps.',
+    'introduction.features.title': 'Key Features',
+    'introduction.features.ai': 'Advanced AI-powered assessment',
+    'introduction.features.fast': 'Fast results in minutes',
+    'introduction.features.secure': 'Absolute information security',
+    'introduction.features.accurate': 'High accuracy with comprehensive data',
+    'introduction.button.start': 'Start Assessment',
+    'introduction.steps.title': '5-step assessment process',
+    'introduction.steps.personal': 'Personal information',
+    'introduction.steps.property': 'Property information',
+    'introduction.steps.loan': 'Loan information',
+    'introduction.steps.professional': 'Professional profile',
+    'introduction.steps.documents': 'Upload documents',
 
     // Common
     'common.loading': 'Loading...',

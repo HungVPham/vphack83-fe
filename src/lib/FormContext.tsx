@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { useAuth } from 'react-oidc-context';
 
 // Define the complete form data structure
 export interface FormData {
@@ -105,7 +106,10 @@ interface FormContextType {
   formData: FormData;
   updateFormData: (updates: Partial<FormData>) => void;
   resetForm: () => void;
-  submitForm: () => void;
+  submitForm: () => Promise<void>;
+  isSubmitting: boolean;
+  submitError: string | null;
+  submitSuccess: boolean;
 }
 
 // Create context
@@ -114,6 +118,10 @@ const FormContext = createContext<FormContextType | undefined>(undefined);
 // Provider component
 export const FormProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const auth = useAuth();
 
   // Function to calculate monthly annuity payment
   const calculateAnnuity = (loanAmount: number, annualRate: number = 0.18, termYears: number = 5): number => {
@@ -177,29 +185,82 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setFormData(initialFormData);
   };
 
-  const submitForm = () => {
-    // Auto-fill submission date/time fields
-    const now = new Date();
-    const weekdays = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
-    const weekdayName = weekdays[now.getDay()];
-    const currentHour = now.getHours();
-    
-    // Update form data with auto-filled submission time fields
-    const finalFormData = {
-      ...formData,
-      WEEKDAY_APPR_PROCESS_START: weekdayName,
-      HOUR_APPR_PROCESS_START: currentHour
-    };
-    
-    console.log('📋 Form submitted with data:', finalFormData);
-    
-    // Here you can add your submission logic
-    // For now, we'll just log the data
-    alert('Form submitted! Check the console for the data.');
+  const submitForm = async () => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+    setSubmitSuccess(false);
+
+    try {
+      // Check if user is authenticated
+      if (!auth.user?.id_token) {
+        throw new Error('User not authenticated');
+      }
+
+      // Auto-fill submission date/time fields
+      const now = new Date();
+      const weekdays = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+      const weekdayName = weekdays[now.getDay()];
+      const currentHour = now.getHours();
+      
+      // Update form data with auto-filled submission time fields
+      const finalFormData = {
+        ...formData,
+        WEEKDAY_APPR_PROCESS_START: weekdayName,
+        HOUR_APPR_PROCESS_START: currentHour
+      };
+
+      // Filter only fully capitalized fields (excluding documents)
+      const filteredFormData: Record<string, any> = {};
+      Object.entries(finalFormData).forEach(([key, value]) => {
+        if (key === key.toUpperCase() && key !== 'DOCUMENTS' && value !== null && value !== undefined) {
+          filteredFormData[key] = value;
+        }
+      });
+
+      console.log('📋 Submitting filtered form data:', filteredFormData);
+
+      // Make API call to backend
+      const response = await fetch('https://uufa8ybm3a.execute-api.ap-southeast-1.amazonaws.com/Stage0/getScore', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${auth.user.id_token}`
+        },
+        body: JSON.stringify({
+          form_data: filteredFormData
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`API call failed: ${response.status} ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      console.log('📊 API Response:', result);
+
+      // Parse the response body if it's a string
+      let scoreData;
+      if (typeof result.body === 'string') {
+        scoreData = JSON.parse(result.body);
+      } else {
+        scoreData = result.body || result;
+      }
+
+      // Store the score result for access by other components
+      localStorage.setItem('creditScoreResult', JSON.stringify(scoreData));
+      
+      setSubmitSuccess(true);
+      
+    } catch (error) {
+      console.error('❌ Form submission error:', error);
+      setSubmitError(error instanceof Error ? error.message : 'An error occurred during submission');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <FormContext.Provider value={{ formData, updateFormData, resetForm, submitForm }}>
+    <FormContext.Provider value={{ formData, updateFormData, resetForm, submitForm, isSubmitting, submitError, submitSuccess }}>
       {children}
     </FormContext.Provider>
   );

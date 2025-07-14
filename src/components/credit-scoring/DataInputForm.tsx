@@ -11,9 +11,14 @@ import LoanInformationStep from "./LoanInformationStep";
 import { useLanguage } from "../../lib/LanguageContext";
 import { FormProvider, useForm } from "../../lib/FormContext";
 
-function DataInputFormContent() {
+interface DataInputFormContentProps {
+  onSubmit?: () => void;
+  onBack?: () => void;
+}
+
+function DataInputFormContent({ onSubmit, onBack }: DataInputFormContentProps) {
   const { t, interpolate } = useLanguage();
-  const { submitForm } = useForm();
+  const { submitForm, isSubmitting, submitError, submitSuccess } = useForm();
   const [currentStep, setCurrentStep] = useState(1);
 
   const totalSteps = 5;
@@ -31,6 +36,8 @@ function DataInputFormContent() {
   const handlePrevStep = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
+    } else if (currentStep === 1 && onBack) {
+      onBack();
     }
   };
 
@@ -96,11 +103,23 @@ function DataInputFormContent() {
       <CardContent className="space-y-6">
         {renderCurrentStep()}
 
+        {submitError && (
+          <div className="bg-red-50 border border-red-200 rounded-md p-4 text-sm text-red-600">
+            <strong>Error:</strong> {submitError}
+          </div>
+        )}
+
+        {submitSuccess && (
+          <div className="bg-green-50 border border-green-200 rounded-md p-4 text-sm text-green-600">
+            <strong>Success:</strong> Form submitted successfully!
+          </div>
+        )}
+
         <div className="flex justify-between pt-6">
           <Button
             variant="outline"
             onClick={handlePrevStep}
-            disabled={currentStep === 1}
+            disabled={currentStep === 1 && !onBack}
             className="flex items-center gap-2"
           >
             <ChevronLeft className="h-4 w-4" />
@@ -108,11 +127,19 @@ function DataInputFormContent() {
           </Button>
 
           <Button
-            onClick={currentStep === totalSteps ? submitForm : handleNextStep}
+            onClick={currentStep === totalSteps ? async () => { 
+              await submitForm(); 
+              if (submitSuccess) {
+                onSubmit?.(); 
+              }
+            } : handleNextStep}
             variant={currentStep === totalSteps ? "default" : "next"}
+            disabled={isSubmitting}
           >
             {currentStep === totalSteps
-              ? t("dataInputForm.button.complete")
+              ? isSubmitting 
+                ? t("dataInputForm.button.submitting") || "Submitting..." 
+                : t("dataInputForm.button.complete")
               : t("dataInputForm.button.continue")}
           </Button>
         </div>
@@ -121,10 +148,15 @@ function DataInputFormContent() {
   );
 }
 
-export function DataInputForm() {
+interface DataInputFormProps {
+  onSubmit?: () => void;
+  onBack?: () => void;
+}
+
+export function DataInputForm({ onSubmit, onBack }: DataInputFormProps) {
   return (
     <FormProvider>
-      <DataInputFormContent />
+      <DataInputFormContent onSubmit={onSubmit} onBack={onBack} />
     </FormProvider>
   );
 }
