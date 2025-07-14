@@ -50,7 +50,10 @@ const getOccupationOptions = (t: (key: string) => string): SelectOption[] => [
   { value: "Low-skill Laborers", label: t("occupation.lowSkillLaborers") },
   { value: "Managers", label: t("occupation.managers") },
   { value: "Medicine staff", label: t("occupation.medicineStaff") },
-  { value: "Private service staff", label: t("occupation.privateServiceStaff") },
+  {
+    value: "Private service staff",
+    label: t("occupation.privateServiceStaff"),
+  },
   { value: "Realty agents", label: t("occupation.realtyAgents") },
   { value: "Sales staff", label: t("occupation.salesStaff") },
   { value: "Secretaries", label: t("occupation.secretaries") },
@@ -64,9 +67,18 @@ const getOrganizationOptions = (t: (key: string) => string): SelectOption[] => [
   { value: "Advertising", label: t("organization.advertising") },
   { value: "Agriculture", label: t("organization.agriculture") },
   { value: "Bank", label: t("organization.bank") },
-  { value: "Business Entity Type 1", label: t("organization.businessEntityType1") },
-  { value: "Business Entity Type 2", label: t("organization.businessEntityType2") },
-  { value: "Business Entity Type 3", label: t("organization.businessEntityType3") },
+  {
+    value: "Business Entity Type 1",
+    label: t("organization.businessEntityType1"),
+  },
+  {
+    value: "Business Entity Type 2",
+    label: t("organization.businessEntityType2"),
+  },
+  {
+    value: "Business Entity Type 3",
+    label: t("organization.businessEntityType3"),
+  },
   { value: "Cleaning", label: t("organization.cleaning") },
   { value: "Construction", label: t("organization.construction") },
   { value: "Electricity", label: t("organization.electricity") },
@@ -124,7 +136,10 @@ const getEducationOptions = (t: (key: string) => string): SelectOption[] => [
   { value: "Higher education", label: t("education.higherEducation") },
   { value: "Incomplete higher", label: t("education.incompleteHigher") },
   { value: "Lower secondary", label: t("education.lowerSecondary") },
-  { value: "Secondary / secondary special", label: t("education.secondarySpecial") },
+  {
+    value: "Secondary / secondary special",
+    label: t("education.secondarySpecial"),
+  },
 ];
 
 export function ProfessionalProfileStep() {
@@ -239,7 +254,6 @@ export function ProfessionalProfileStep() {
           {t("professionalProfile.title")}
         </h3>
         <div className="space-y-4">
-          {/* Row 1: Education Level and Employment Status */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="text-left">
               <Label
@@ -252,7 +266,9 @@ export function ProfessionalProfileStep() {
                 id="educationType"
                 options={educationOptions}
                 value={formData.NAME_EDUCATION_TYPE || ""}
-                placeholder={t("professionalProfile.educationLevel.placeholder")}
+                placeholder={t(
+                  "professionalProfile.educationLevel.placeholder"
+                )}
                 onChange={(value) => {
                   updateFormData({ NAME_EDUCATION_TYPE: value });
                 }}
@@ -271,42 +287,42 @@ export function ProfessionalProfileStep() {
                 id="employmentType"
                 options={employmentOptions}
                 value={formData.NAME_INCOME_TYPE || ""}
-                placeholder={t("professionalProfile.employmentStatus.placeholder")}
+                placeholder={t(
+                  "professionalProfile.employmentStatus.placeholder"
+                )}
                 onChange={(value) => {
                   updateFormData({ NAME_INCOME_TYPE: value });
                 }}
                 className="mt-1"
               />
             </div>
-          </div>
-
-          {/* Row 2: Monthly Income */}
-          <div className="text-left">
-            <Label
-              htmlFor="monthlyIncome"
-              className="text-sm font-medium text-gray-700"
-            >
-              {t("professionalProfile.monthlyIncome")}
-            </Label>
-            <div className="relative mt-1">
-              <input
-                id="monthlyIncome"
-                type="text"
-                value={formatCurrency(formData.incomeMonthly?.toString() || "")}
-                onChange={(e) =>
-                  handleAmountChange(e.target.value, (value) => updateFormData({ incomeMonthly: parseInt(value) }))
-                }
-                placeholder="0"
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pr-12"
-              />
-              <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-gray-500">
-                VND
+            <div className="text-left">
+              <Label
+                htmlFor="monthlyIncome"
+                className="text-sm font-medium text-gray-700"
+              >
+                {t("professionalProfile.monthlyIncome")}
+              </Label>
+              <div className="relative mt-1">
+                <input
+                  id="monthlyIncome"
+                  type="text"
+                  value={formatCurrency(
+                    formData.incomeMonthly?.toString() || ""
+                  )}
+                  onChange={(e) =>
+                    handleAmountChange(e.target.value, (value) =>
+                      updateFormData({ incomeMonthly: parseInt(value) })
+                    )
+                  }
+                  placeholder="0"
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pr-12"
+                />
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-gray-500">
+                  VND
+                </div>
               </div>
             </div>
-          </div>
-
-          {/* Row 3: Occupation Type and Organization Type */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="text-left">
               <Label
                 htmlFor="occupationType"
@@ -318,7 +334,9 @@ export function ProfessionalProfileStep() {
                 id="occupationType"
                 options={occupationOptions}
                 value={formData.OCCUPATION_TYPE || ""}
-                placeholder={t("professionalProfile.occupationType.placeholder")}
+                placeholder={t(
+                  "professionalProfile.occupationType.placeholder"
+                )}
                 onChange={(value) => {
                   updateFormData({ OCCUPATION_TYPE: value });
                 }}
@@ -337,17 +355,15 @@ export function ProfessionalProfileStep() {
                 id="organizationType"
                 options={organizationOptions}
                 value={formData.ORGANIZATION_TYPE || ""}
-                placeholder={t("professionalProfile.organizationType.placeholder")}
+                placeholder={t(
+                  "professionalProfile.organizationType.placeholder"
+                )}
                 onChange={(value) => {
                   updateFormData({ ORGANIZATION_TYPE: value });
                 }}
                 className="mt-1"
               />
             </div>
-          </div>
-
-          {/* Row 4: Work Province and Work Ward */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="text-left">
               <Label
                 htmlFor="workProvince"
@@ -361,7 +377,9 @@ export function ProfessionalProfileStep() {
                 value={formData.workProvince || ""}
                 onChange={handleWorkProvinceChange}
                 placeholder={
-                  isLoadingWorkProvinces ? t("common.loading") : t("professionalProfile.workProvince.placeholder")
+                  isLoadingWorkProvinces
+                    ? t("common.loading")
+                    : t("professionalProfile.workProvince.placeholder")
                 }
                 searchable={!isLoadingWorkProvinces}
                 searchPlaceholder={t("common.searchPlaceholder")}
@@ -371,7 +389,10 @@ export function ProfessionalProfileStep() {
             </div>
 
             <div className="text-left">
-              <Label htmlFor="workWard" className="text-sm font-medium text-gray-700">
+              <Label
+                htmlFor="workWard"
+                className="text-sm font-medium text-gray-700"
+              >
                 {t("professionalProfile.workWard")}
               </Label>
               <Select

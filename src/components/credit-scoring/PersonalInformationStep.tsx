@@ -210,6 +210,7 @@ export function PersonalInformationStep() {
               </Label>
               <div className="relative mt-1">
                 <DatePicker
+                  id="dob"
                   selected={(() => {
                     if (!formData.DAYS_BIRTH) return null;
                     // Calculate date by adding days to today (simple date arithmetic)
@@ -290,12 +291,11 @@ export function PersonalInformationStep() {
                   direction="horizontal"
                   className="flex-1"
                 />
+                {formData.hasChildren === "yes" && (
                 <div className="flex items-center space-x-2">
                   <Label
                     htmlFor="numberOfChildren"
-                    className={`text-sm font-medium ${
-                      formData.hasChildren === "yes" ? "text-gray-700" : "text-gray-400"
-                    }`}
+                    className={`text-sm font-medium`}
                   >
                     {t("personalInfo.numberOfChildren")}:
                   </Label>
@@ -311,6 +311,7 @@ export function PersonalInformationStep() {
                     }`}
                   />
                 </div>
+                )}
               </div>
             </div>
           </div>
