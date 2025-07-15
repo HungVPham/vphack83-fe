@@ -44,6 +44,7 @@ export interface FormData {
   file_uploads: Array<{
     filename: string;
     s3_key: string;
+    content_type: string;
   }>;
 }
 
@@ -171,20 +172,25 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         ...formData
       };
 
-      // Filter only fully capitalized fields (excluding documents but including file_uploads)
+      // Filter only fully capitalized fields (excluding documents and file_uploads)
       const filteredFormData: Record<string, any> = {};
       Object.entries(finalFormData).forEach(([key, value]) => {
-        if (key === key.toUpperCase() && key !== 'DOCUMENTS' && value !== null && value !== undefined) {
+        if (key === key.toUpperCase() && key !== 'DOCUMENTS' && key !== 'FILE_UPLOADS' && value !== null && value !== undefined) {
           filteredFormData[key] = value;
         }
       });
       
-      // Add file_uploads if available
+      // Prepare the request body with form_data and file_uploads at the same level
+      const requestBody: any = {
+        form_data: filteredFormData
+      };
+      
+      // Add file_uploads at the same level as form_data if available
       if (finalFormData.file_uploads && finalFormData.file_uploads.length > 0) {
-        filteredFormData.file_uploads = finalFormData.file_uploads;
+        requestBody.file_uploads = finalFormData.file_uploads;
       }
 
-      console.log('📋 Submitting filtered form data:', filteredFormData);
+      console.log('📋 Submitting request body:', requestBody);
 
       // Make API call to backend
       const response = await fetch('https://uufa8ybm3a.execute-api.ap-southeast-1.amazonaws.com/Stage0/getScore', {
@@ -193,9 +199,7 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${auth.user.id_token}`
         },
-        body: JSON.stringify({
-          form_data: filteredFormData
-        })
+        body: JSON.stringify(requestBody)
       });
 
       if (!response.ok) {

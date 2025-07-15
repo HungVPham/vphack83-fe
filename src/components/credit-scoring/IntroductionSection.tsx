@@ -1,4 +1,4 @@
-import { CheckCircle, Brain, Clock, Shield, Target, User, Home, CreditCard, Briefcase, FileText } from 'lucide-react';
+import { CheckCircle, Brain, Clock, Shield, Target, User, Briefcase, FileText } from 'lucide-react';
 import { useLanguage } from '../../lib/LanguageContext';
 
 interface IntroductionSectionProps {

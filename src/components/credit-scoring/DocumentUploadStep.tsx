@@ -19,6 +19,27 @@ export function DocumentUploadStep() {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isDragging, setIsDragging] = useState(false);
 
+  // Helper function to get content type from file extension
+  const getContentTypeFromExtension = (filename: string): string => {
+    const extension = filename.toLowerCase().split('.').pop();
+    const contentTypeMap: { [key: string]: string } = {
+      'pdf': 'application/pdf',
+      'txt': 'text/plain',
+      'csv': 'text/csv',
+      'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+      'html': 'text/html',
+      'css': 'text/css',
+      'js': 'application/javascript',
+      'json': 'application/json',
+      'xml': 'application/xml',
+      'md': 'text/markdown',
+      'rtf': 'application/rtf'
+    };
+    return contentTypeMap[extension || ''] || 'application/octet-stream';
+  };
+
   const uploadFileToS3 = async (file: File): Promise<{ s3Key: string; uuid: string } | null> => {
     try {
       if (!auth.user?.id_token) {
@@ -110,7 +131,8 @@ export function DocumentUploadStep() {
             ...formData.file_uploads,
             {
               filename: file.name,
-              s3_key: result.s3Key
+              s3_key: result.s3Key,
+              content_type: getContentTypeFromExtension(file.name)
             }
           ]
         });
@@ -150,6 +172,36 @@ export function DocumentUploadStep() {
     updateFormData({ 
       documents: formData.documents.filter(f => f !== fileToRemove.file),
       file_uploads: formData.file_uploads.filter(upload => upload.filename !== fileToRemove.file.name)
+    });
+  };
+
+  const handleSampleDataUpload = () => {
+    // Create a mock File object for display purposes
+    const mockFile = new File(['Sample social media data content'], 'test_document.txt', {
+      type: 'text/plain'
+    });
+
+    const sampleFileData: UploadedFile = {
+      file: mockFile,
+      s3Key: 'a9c713a3-c695-4239-9f52-e46ab7ad5bff.txt',
+      uuid: 'sample-uuid',
+      uploading: false
+    };
+
+    // Add sample file to uploaded files list
+    setUploadedFiles(prev => [...prev, sampleFileData]);
+
+    // Update form data with sample file information
+    updateFormData({ 
+      documents: [...formData.documents, mockFile],
+      file_uploads: [
+        ...formData.file_uploads,
+        {
+          filename: "test_document.txt",
+          s3_key: "a9c713a3-c695-4239-9f52-e46ab7ad5bff.txt",
+          content_type: "text/plain"
+        }
+      ]
     });
   };
 
@@ -214,10 +266,24 @@ export function DocumentUploadStep() {
             id="file-input"
             type="file"
             multiple
-            accept=".pdf,.txt,.csv,.docx,.xlsx,.pptx,.jpg,.jpeg,.png,.gif,.webp,.html,.css,.js,.json,.xml,.md,.rtf"
+            accept=".pdf,.txt,.csv,.docx,.xlsx,.pptx,.html,.css,.js,.json,.xml,.md,.rtf"
             onChange={handleFileSelect}
             className="hidden"
           />
+        </div>
+
+        {/* Sample Data Upload Button */}
+        <div className="mt-4 text-center">
+          <button
+            onClick={handleSampleDataUpload}
+            className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#015aad] transition-colors"
+          >
+            <FileText className="h-4 w-4 mr-2" />
+            {t("documentUpload.uploadSampleData") || "Upload Sample Data"}
+          </button>
+          <p className="text-xs text-gray-500 mt-1">
+            {t("documentUpload.sampleDataDescription") || "Use sample social media data for testing"}
+          </p>
         </div>
 
         {uploadedFiles.length > 0 && (
