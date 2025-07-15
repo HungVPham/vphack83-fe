@@ -26,7 +26,7 @@ export function DocumentUploadStep() {
       }
 
       // Get presigned URL from /uploadS3 endpoint
-      const presignedResponse = await fetch('https://uufa8ybm3a.execute-api.ap-southeast-1.amazonaws.com/Stage0/uploadS3', {
+      const presignedResponse = await fetch(import.meta.env.VITE_S3_UPLOAD_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -163,36 +163,36 @@ export function DocumentUploadStep() {
 
         {/* Alternative Data Categories */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div className="p-4 border rounded-lg bg-blue-50 border-blue-200">
-            <div className="flex items-center mb-2">
+          <div className="p-4 border rounded-lg bg-blue-50 border-blue-200 flex flex-col items-center">
+            <div className="flex items-center justify-center mb-2">
               <Receipt className="h-5 w-5 text-blue-600 mr-2" />
-              <h4 className="font-medium text-blue-900">{t("alternativeData.bills.title")}</h4>
+              <h4 className="font-medium text-blue-900 text-center">{t("alternativeData.bills.title")}</h4>
             </div>
-            <p className="text-sm text-blue-700">{t("alternativeData.bills.description")}</p>
+            <p className="text-sm text-blue-700 text-center">{t("alternativeData.bills.description")}</p>
           </div>
           
-          <div className="p-4 border rounded-lg bg-green-50 border-green-200">
-            <div className="flex items-center mb-2">
+          <div className="p-4 border rounded-lg bg-green-50 border-green-200 flex flex-col items-center">
+            <div className="flex items-center justify-center mb-2">
               <ShoppingCart className="h-5 w-5 text-green-600 mr-2" />
-              <h4 className="font-medium text-green-900">{t("alternativeData.shopping.title")}</h4>
+              <h4 className="font-medium text-green-900 text-center">{t("alternativeData.shopping.title")}</h4>
             </div>
-            <p className="text-sm text-green-700">{t("alternativeData.shopping.description")}</p>
+            <p className="text-sm text-green-700 text-center">{t("alternativeData.shopping.description")}</p>
           </div>
           
-          <div className="p-4 border rounded-lg bg-purple-50 border-purple-200">
-            <div className="flex items-center mb-2">
+          <div className="p-4 border rounded-lg bg-purple-50 border-purple-200 flex flex-col items-center">
+            <div className="flex items-center justify-center mb-2">
               <MessageSquare className="h-5 w-5 text-purple-600 mr-2" />
-              <h4 className="font-medium text-purple-900">{t("alternativeData.socialMedia.title")}</h4>
+              <h4 className="font-medium text-purple-900 text-center">{t("alternativeData.socialMedia.title")}</h4>
             </div>
-            <p className="text-sm text-purple-700">{t("alternativeData.socialMedia.description")}</p>
+            <p className="text-sm text-purple-700 text-center">{t("alternativeData.socialMedia.description")}</p>
           </div>
           
-          <div className="p-4 border rounded-lg bg-orange-50 border-orange-200">
-            <div className="flex items-center mb-2">
+          <div className="p-4 border rounded-lg bg-orange-50 border-orange-200 flex flex-col items-center">
+            <div className="flex items-center justify-center mb-2">
               <FileText className="h-5 w-5 text-orange-600 mr-2" />
-              <h4 className="font-medium text-orange-900">{t("alternativeData.other.title")}</h4>
+              <h4 className="font-medium text-orange-900 text-center">{t("alternativeData.other.title")}</h4>
             </div>
-            <p className="text-sm text-orange-700">{t("alternativeData.other.description")}</p>
+            <p className="text-sm text-orange-700 text-center">{t("alternativeData.other.description")}</p>
           </div>
         </div>
 
