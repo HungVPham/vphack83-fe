@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { CheckCircle, Check, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useLanguage } from "../../lib/LanguageContext";
 import { useState, useEffect } from "react";
 
@@ -38,19 +38,35 @@ interface CreditScoreResultsProps {
 export function CreditScoreResults({ lambdaData, onStartNewForm }: CreditScoreResultsProps) {
   const { t, language } = useLanguage();
   const [apiScoreData, setApiScoreData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
   
   // Load API response from localStorage on component mount
   useEffect(() => {
-    const storedResult = localStorage.getItem('creditScoreResult');
-    if (storedResult) {
-      try {
-        const parsed = JSON.parse(storedResult);
-        setApiScoreData(parsed);
-      } catch (error) {
-        console.error('Error parsing stored credit score result:', error);
+    const checkForResult = () => {
+      const storedResult = localStorage.getItem('creditScoreResult');
+      if (storedResult) {
+        try {
+          const parsed = JSON.parse(storedResult);
+          setApiScoreData(parsed);
+          setIsLoading(false);
+        } catch (error) {
+          console.error('Error parsing stored credit score result:', error);
+          setIsLoading(false);
+        }
       }
-    }
-  }, []);
+    };
+    
+    checkForResult();
+    
+    // Poll for result every 1 second if not found
+    const interval = setInterval(() => {
+      if (isLoading) {
+        checkForResult();
+      }
+    }, 1000);
+    
+    return () => clearInterval(interval);
+  }, [isLoading]);
   
   // Use API data if available, otherwise use lambda data prop, otherwise use mock data for demo
   const currentScore = apiScoreData?.xgboost_score 
@@ -59,46 +75,36 @@ export function CreditScoreResults({ lambdaData, onStartNewForm }: CreditScoreRe
   const maxScore = 100; // Always out of 100 for percentage-based scoring
 
   const getScoreData = (score: number): ScoreData => {
-    const percentage = (score / maxScore) * 100;
-
-    if (percentage >= 80) {
+    if (score >= 75) {
       return {
         score,
         maxScore,
         color: "#00b74f",
-        label: t('creditScore.excellent'),
+        label: t('creditScore.lowRisk'),
         labelColor: "from-[#00b74f] to-[#00b74f]"
       };
-    } else if (percentage >= 60) {
+    } else if (score >= 50) {
       return {
         score,
         maxScore,
         color: "#90EE90",
-        label: t('creditScore.veryGood'),
+        label: t('creditScore.mediumLowRisk'),
         labelColor: "from-[#90EE90] to-[#00b74f]"
       };
-    } else if (percentage >= 40) {
+    } else if (score >= 25) {
       return {
         score,
         maxScore,
         color: "#FFD700",
-        label: t('creditScore.good'),
+        label: t('creditScore.mediumRisk'),
         labelColor: "from-[#FFD700] to-[#90EE90]"
-      };
-    } else if (percentage >= 20) {
-      return {
-        score,
-        maxScore,
-        color: "#FF8C00",
-        label: t('creditScore.fair'),
-        labelColor: "from-[#FF8C00] to-[#FFD700]"
       };
     } else {
       return {
         score,
         maxScore,
         color: "#E70000",
-        label: t('creditScore.poor'),
+        label: t('creditScore.highRisk'),
         labelColor: "from-[#E70000] to-[#FF8C00]"
       };
     }
@@ -121,6 +127,30 @@ export function CreditScoreResults({ lambdaData, onStartNewForm }: CreditScoreRe
   const fillLength = gaugeLength * (percentage / 100);
   const progressDashArray = `${fillLength} ${circumference - fillLength}`;
   const progressDashOffset = gapOffset; // Same starting point as background
+
+  // Show loading state while waiting for API response
+  if (isLoading) {
+    return (
+      <Card className="h-fit">
+        <CardHeader className="text-center pb-4">
+          <CardTitle className="text-2xl font-bold text-gray-800">{t('creditScore.title')}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#015aad] mx-auto mb-4"></div>
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              {language === 'vi' ? 'Đang phân tích dữ liệu...' : 'Analyzing your data...'}
+            </h3>
+            <p className="text-sm text-gray-600">
+              {language === 'vi' 
+                ? 'Vui lòng chờ trong giây lát, chúng tôi đang xử lý thông tin của bạn.'
+                : 'Please wait a moment while we process your information.'}
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="h-fit">
@@ -172,114 +202,6 @@ export function CreditScoreResults({ lambdaData, onStartNewForm }: CreditScoreRe
             style={{ backgroundColor: scoreData.color }}
           >
             {scoreData.label}
-          </div>
-        </div>
-
-        {/* AI Explanation */}
-        <div>
-          <h4 className="text-lg font-semibold text-gray-800 mb-3">{t('creditScore.meaningTitle')}</h4>
-          <p className="text-sm text-gray-600 leading-relaxed">
-            {lambdaData?.explanation?.[language] || 
-              (percentage >= 80
-                ? (language === 'vi' 
-                    ? "Điểm số của bạn rất tốt, chủ yếu dựa trên lịch sử nghề nghiệp ổn định và việc thanh toán hóa đơn tiện ích đúng hạn. Điều này cho thấy độ tin cậy tài chính cao."
-                    : "Your score is excellent, mainly based on stable career history and timely utility bill payments. This shows high financial reliability.")
-                : percentage >= 60
-                ? (language === 'vi' 
-                    ? "Điểm số của bạn khá tốt, cho thấy khả năng quản lý tài chính ổn định. Một số cải thiện nhỏ có thể giúp nâng cao điểm số."
-                    : "Your score is quite good, showing stable financial management capabilities. Some minor improvements could help boost your score.")
-                : percentage >= 40
-                ? (language === 'vi' 
-                    ? "Điểm số của bạn ở mức trung bình. Có nhiều cơ hội để cải thiện hồ sơ tín dụng thông qua việc quản lý tài chính tốt hơn."
-                    : "Your score is at an average level. There are many opportunities to improve your credit profile through better financial management.")
-                : percentage >= 20
-                ? (language === 'vi' 
-                    ? "Điểm số của bạn cần được cải thiện. Chúng tôi khuyến nghị bạn tập trung vào việc xây dựng lịch sử tín dụng tích cực."
-                    : "Your score needs improvement. We recommend focusing on building positive credit history.")
-                : (language === 'vi' 
-                    ? "Điểm số của bạn cần được cải thiện đáng kể. Hãy bắt đầu với những bước cơ bản để xây dựng hồ sơ tín dụng."
-                    : "Your score needs significant improvement. Start with the basic steps to build your credit profile.")
-              )
-            }
-          </p>
-        </div>
-
-        {/* Strengths & Suggestions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h5 className="font-semibold text-gray-800 mb-3 flex items-center">
-              <CheckCircle className="h-4 w-4 text-[#00b74f] mr-2" />
-              {t('creditScore.strengths')}
-            </h5>
-            <div className="space-y-2">
-              {lambdaData?.strengths?.[language] ? (
-                lambdaData.strengths[language].map((strength, index) => (
-                  <div key={index} className="flex items-center text-sm text-gray-600">
-                    <Check className="h-4 w-4 text-[#00b74f] mr-2 flex-shrink-0" />
-                    {strength}
-                  </div>
-                ))
-              ) : (
-                <>
-                  {percentage >= 40 && (
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Check className="h-4 w-4 text-[#00b74f] mr-2 flex-shrink-0" />
-                      {t('creditScore.strength.utilityPayments')}
-                    </div>
-                  )}
-                  {percentage >= 60 && (
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Check className="h-4 w-4 text-[#00b74f] mr-2 flex-shrink-0" />
-                      {t('creditScore.strength.stableCareer')}
-                    </div>
-                  )}
-                  {percentage >= 80 && (
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Check className="h-4 w-4 text-[#00b74f] mr-2 flex-shrink-0" />
-                      {t('creditScore.strength.positiveCreditHistory')}
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <h5 className="font-semibold text-gray-800 mb-3 flex items-center">
-              <ArrowRight className="h-4 w-4 text-[#015aad] mr-2" />
-              {t('creditScore.suggestions')}
-            </h5>
-            <div className="space-y-2">
-              {lambdaData?.suggestions?.[language] ? (
-                lambdaData.suggestions[language].map((suggestion, index) => (
-                  <div key={index} className="flex items-start text-sm text-gray-600">
-                    <ArrowRight className="h-4 w-4 text-[#015aad] mr-2 flex-shrink-0 mt-0.5" />
-                    {suggestion}
-                  </div>
-                ))
-              ) : (
-                <>
-                  {percentage < 80 && (
-                    <div className="flex items-start text-sm text-gray-600">
-                      <ArrowRight className="h-4 w-4 text-[#015aad] mr-2 flex-shrink-0 mt-0.5" />
-                      {t('creditScore.suggestion.linkBankAccount')}
-                    </div>
-                  )}
-                  {percentage < 60 && (
-                    <div className="flex items-start text-sm text-gray-600">
-                      <ArrowRight className="h-4 w-4 text-[#015aad] mr-2 flex-shrink-0 mt-0.5" />
-                      {t('creditScore.suggestion.autoPayments')}
-                    </div>
-                  )}
-                  {percentage < 40 && (
-                    <div className="flex items-start text-sm text-gray-600">
-                      <ArrowRight className="h-4 w-4 text-[#015aad] mr-2 flex-shrink-0 mt-0.5" />
-                      {t('creditScore.suggestion.buildIncomeHistory')}
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
           </div>
         </div>
 

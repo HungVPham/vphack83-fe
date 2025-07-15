@@ -38,24 +38,14 @@ export function IntroductionSection({ onStart }: IntroductionSectionProps) {
       color: 'text-blue-500'
     },
     {
-      icon: Home,
-      title: t('introduction.steps.property'),
+      icon: Briefcase,
+      title: t('introduction.steps.propertyProfessional'),
       color: 'text-green-500'
     },
     {
-      icon: CreditCard,
-      title: t('introduction.steps.loan'),
-      color: 'text-orange-500'
-    },
-    {
-      icon: Briefcase,
-      title: t('introduction.steps.professional'),
-      color: 'text-purple-500'
-    },
-    {
       icon: FileText,
-      title: t('introduction.steps.documents'),
-      color: 'text-red-500'
+      title: t('introduction.steps.alternativeData'),
+      color: 'text-purple-500'
     }
   ];
 

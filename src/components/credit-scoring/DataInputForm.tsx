@@ -4,10 +4,8 @@ import { Button } from "../ui/button";
 import { StepProgress } from "../ui/step-progress";
 import { ChevronLeft } from "lucide-react";
 import { PersonalInformationStep } from "./PersonalInformationStep";
-import { PersonalPropertyStep } from "./PersonalPropertyStep";
-import { ProfessionalProfileStep } from "./ProfessionalProfileStep";
+import { PersonalPropertyAndProfessionalStep } from "./PersonalPropertyAndProfessionalStep";
 import { DocumentUploadStep } from "./DocumentUploadStep";
-import LoanInformationStep from "./LoanInformationStep";
 import { useLanguage } from "../../lib/LanguageContext";
 import { FormProvider, useForm } from "../../lib/FormContext";
 
@@ -21,7 +19,7 @@ function DataInputFormContent({ onSubmit, onBack }: DataInputFormContentProps) {
   const { submitForm, isSubmitting, submitError, submitSuccess } = useForm();
   const [currentStep, setCurrentStep] = useState(1);
 
-  const totalSteps = 5;
+  const totalSteps = 3;
 
   const handleStepClick = (step: number) => {
     setCurrentStep(step);
@@ -46,12 +44,8 @@ function DataInputFormContent({ onSubmit, onBack }: DataInputFormContentProps) {
       case 1:
         return <PersonalInformationStep />;
       case 2:
-        return <PersonalPropertyStep />;
+        return <PersonalPropertyAndProfessionalStep />;
       case 3:
-        return <LoanInformationStep />;
-      case 4:
-        return <ProfessionalProfileStep />;
-      case 5:
         return <DocumentUploadStep />;
       default:
         return <PersonalInformationStep />;
@@ -63,12 +57,8 @@ function DataInputFormContent({ onSubmit, onBack }: DataInputFormContentProps) {
       case 1:
         return t("dataInputForm.step.personalInfo");
       case 2:
-        return t("dataInputForm.step.personalProperty");
+        return t("dataInputForm.step.personalPropertyAndProfessional");
       case 3:
-        return t("dataInputForm.step.loanInfo");
-      case 4:
-        return t("dataInputForm.step.professionalProfile");
-      case 5:
         return t("dataInputForm.step.financialDocuments");
       default:
         return t("dataInputForm.step.personalInfo");
@@ -128,18 +118,14 @@ function DataInputFormContent({ onSubmit, onBack }: DataInputFormContentProps) {
 
           <Button
             onClick={currentStep === totalSteps ? async () => { 
+              onSubmit?.(); 
               await submitForm(); 
-              if (submitSuccess) {
-                onSubmit?.(); 
-              }
             } : handleNextStep}
             variant={currentStep === totalSteps ? "default" : "next"}
             disabled={isSubmitting}
           >
             {currentStep === totalSteps
-              ? isSubmitting 
-                ? t("dataInputForm.button.submitting") || "Submitting..." 
-                : t("dataInputForm.button.complete")
+              ? (isSubmitting ? t("dataInputForm.button.submitting") : t("dataInputForm.button.complete"))
               : t("dataInputForm.button.continue")}
           </Button>
         </div>
