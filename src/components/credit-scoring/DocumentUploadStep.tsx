@@ -55,7 +55,7 @@ export function DocumentUploadStep() {
         },
         body: JSON.stringify({
           filename: file.name,
-          contentType: file.type
+          contentType: getContentTypeFromExtension(file.name)
         })
       });
 
@@ -75,7 +75,7 @@ export function DocumentUploadStep() {
       const uploadResponse = await fetch(presignedUrl, {
         method: 'PUT',
         headers: {
-          'Content-Type': file.type
+          'Content-Type': getContentTypeFromExtension(file.name)
         },
         body: file
       });
@@ -126,9 +126,9 @@ export function DocumentUploadStep() {
       // Update form data with uploaded files
       if (result) {
         updateFormData({ 
-          documents: [...formData.documents, file],
+          documents: [...(formData.documents || []), file],
           file_uploads: [
-            ...formData.file_uploads,
+            ...(formData.file_uploads || []),
             {
               filename: file.name,
               s3_key: result.s3Key,
@@ -170,8 +170,8 @@ export function DocumentUploadStep() {
   const removeFile = (fileToRemove: UploadedFile) => {
     setUploadedFiles(prev => prev.filter(f => f !== fileToRemove));
     updateFormData({ 
-      documents: formData.documents.filter(f => f !== fileToRemove.file),
-      file_uploads: formData.file_uploads.filter(upload => upload.filename !== fileToRemove.file.name)
+      documents: (formData.documents || []).filter(f => f !== fileToRemove.file),
+      file_uploads: (formData.file_uploads || []).filter(upload => upload.filename !== fileToRemove.file.name)
     });
   };
 
@@ -193,9 +193,9 @@ export function DocumentUploadStep() {
 
     // Update form data with sample file information
     updateFormData({ 
-      documents: [...formData.documents, mockFile],
+      documents: [...(formData.documents || []), mockFile],
       file_uploads: [
-        ...formData.file_uploads,
+        ...(formData.file_uploads || []),
         {
           filename: "test_document.txt",
           s3_key: "a9c713a3-c695-4239-9f52-e46ab7ad5bff.txt",
