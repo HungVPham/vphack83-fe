@@ -121,6 +121,9 @@ const translations = {
     'documentUpload.dragDrop': 'Kéo thả tệp hoặc nhấn để tải lên',
     'documentUpload.acceptedFormats': 'Chấp nhận: JSON, CSV, PDF, JPG, PNG. Tối đa 10MB.',
     'documentUpload.uploaded': 'Đã tải lên',
+    'documentUpload.uploadSampleData': 'Tải lên dữ liệu mẫu',
+    'documentUpload.sampleDataDescription': 'Sử dụng dữ liệu mẫu để kiểm tra',
+
     // Alternative Data Categories
     'alternativeData.bills.title': 'Hóa Đơn & Chứng Từ',
     'alternativeData.bills.description': 'Hóa đơn điện, nước, internet, điện thoại, thuê nhà',
@@ -365,6 +368,9 @@ const translations = {
     'documentUpload.dragDrop': 'Drag and drop files or click to upload',
     'documentUpload.acceptedFormats': 'Accepts: JSON, CSV, PDF, JPG, PNG. Maximum 10MB.',
     'documentUpload.uploaded': 'Uploaded',
+    'documentUpload.uploadSampleData': 'Upload Sample Data',
+    'documentUpload.sampleDataDescription': 'Use sample social media data for testing',
+
     // Alternative Data Categories
     'alternativeData.bills.title': 'Bills & Receipts',
     'alternativeData.bills.description': 'Utility bills, phone bills, internet, rent payments, receipts',
