@@ -57,20 +57,17 @@ export function DocumentUploadStep() {
       }
 
       // Get presigned URL from /uploadS3 endpoint
-      const presignedResponse = await fetch(
-        import.meta.env.VITE_S3_UPLOAD_URL,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${auth.user.id_token}`,
-          },
-          body: JSON.stringify({
-            filename: file.name,
-            contentType: file.type,
-          }),
-        }
-      );
+      const presignedResponse = await fetch(import.meta.env.VITE_S3_UPLOAD_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${auth.user.id_token}`
+        },
+        body: JSON.stringify({
+          filename: file.name,
+          contentType: getContentTypeFromExtension(file.name)
+        })
+      });
 
       if (!presignedResponse.ok) {
         throw new Error(
@@ -90,7 +87,7 @@ export function DocumentUploadStep() {
       const uploadResponse = await fetch(presignedUrl, {
         method: "PUT",
         headers: {
-          "Content-Type": file.type,
+          'Content-Type': getContentTypeFromExtension(file.name)
         },
         body: file,
       });
@@ -140,10 +137,10 @@ export function DocumentUploadStep() {
 
       // Update form data with uploaded files
       if (result) {
-        updateFormData({
-          documents: [...formData.documents, file],
+        updateFormData({ 
+          documents: [...(formData.documents || []), file],
           file_uploads: [
-            ...formData.file_uploads,
+            ...(formData.file_uploads || []),
             {
               filename: file.name,
               s3_key: result.s3Key,
@@ -183,12 +180,10 @@ export function DocumentUploadStep() {
   };
 
   const removeFile = (fileToRemove: UploadedFile) => {
-    setUploadedFiles((prev) => prev.filter((f) => f !== fileToRemove));
-    updateFormData({
-      documents: formData.documents.filter((f) => f !== fileToRemove.file),
-      file_uploads: formData.file_uploads.filter(
-        (upload) => upload.filename !== fileToRemove.file.name
-      ),
+    setUploadedFiles(prev => prev.filter(f => f !== fileToRemove));
+    updateFormData({ 
+      documents: (formData.documents || []).filter(f => f !== fileToRemove.file),
+      file_uploads: (formData.file_uploads || []).filter(upload => upload.filename !== fileToRemove.file.name)
     });
   };
 
@@ -213,10 +208,10 @@ export function DocumentUploadStep() {
     setUploadedFiles((prev) => [...prev, sampleFileData]);
 
     // Update form data with sample file information
-    updateFormData({
-      documents: [...formData.documents, mockFile],
+    updateFormData({ 
+      documents: [...(formData.documents || []), mockFile],
       file_uploads: [
-        ...formData.file_uploads,
+        ...(formData.file_uploads || []),
         {
           filename: "test_document.txt",
           s3_key: "a9c713a3-c695-4239-9f52-e46ab7ad5bff.txt",
