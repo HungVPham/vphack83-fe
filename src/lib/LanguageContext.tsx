@@ -161,6 +161,13 @@ const translations = {
     'introduction.steps.propertyProfessional': 'Thông tin tài sản & nghề nghiệp',
     'introduction.steps.alternativeData': 'Dữ liệu thay thế',
 
+    // Form Prefill
+    'formPrefill.demoPersonas': 'Dữ liệu mẫu',
+    'formPrefill.selectPersona': 'Chọn persona',
+    'formPrefill.persona.youngGenz': 'GenZ trẻ nghèo',
+    'formPrefill.persona.middleAgedWorker': 'Nhân viên trung niên ly hôn',
+    'formPrefill.persona.retiredNurse': 'Y tá nghỉ hưu',
+
     // Common
     'common.loading': 'Đang tải...',
     'common.searchPlaceholder': 'Tìm kiếm...',
@@ -407,6 +414,13 @@ const translations = {
     'introduction.steps.personal': 'Personal information',
     'introduction.steps.propertyProfessional': 'Property & professional information',
     'introduction.steps.alternativeData': 'Alternative data upload',
+
+    // Form Prefill
+    'formPrefill.demoPersonas': 'Demo Personas',
+    'formPrefill.selectPersona': 'Select a persona',
+    'formPrefill.persona.youngGenz': 'Young GenZ Student',
+    'formPrefill.persona.middleAgedWorker': 'Middle-aged Divorced Worker',
+    'formPrefill.persona.retiredNurse': 'Retired Nurse',
 
     // Common
     'common.loading': 'Loading...',

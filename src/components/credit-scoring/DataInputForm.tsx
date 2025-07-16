@@ -8,6 +8,7 @@ import { PersonalPropertyAndProfessionalStep } from "./PersonalPropertyAndProfes
 import { DocumentUploadStep } from "./DocumentUploadStep";
 import { useLanguage } from "../../lib/LanguageContext";
 import { FormProvider, useForm } from "../../lib/FormContext";
+import { FormPrefill } from "./FormPrefill";
 
 interface DataInputFormContentProps {
   onSubmit?: () => void;
@@ -106,15 +107,18 @@ function DataInputFormContent({ onSubmit, onBack }: DataInputFormContentProps) {
         )}
 
         <div className="flex justify-between pt-6">
-          <Button
-            variant="outline"
-            onClick={handlePrevStep}
-            disabled={currentStep === 1 && !onBack}
-            className="flex items-center gap-2"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            {t("dataInputForm.button.back")}
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              onClick={handlePrevStep}
+              disabled={currentStep === 1 && !onBack}
+              className="flex items-center gap-2"
+            >
+              <ChevronLeft className="h-4 w-4" />
+              {t("dataInputForm.button.back")}
+            </Button>
+            <FormPrefill />
+          </div>
 
           <Button
             onClick={currentStep === totalSteps ? async () => { 

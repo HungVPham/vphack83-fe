@@ -159,6 +159,14 @@ export function LoginPage() {
                 {auth.isLoading ? "Đang đăng nhập..." : "Đăng Nhập với AWS Cognito"}
               </Button>
               
+              <div className="mt-4 p-3 bg-blue-50 rounded-md border border-blue-200">
+                <div className="text-sm font-medium text-blue-800 mb-2">Test Credentials:</div>
+                <div className="text-xs text-blue-700">
+                  <div>Username: test</div>
+                  <div>Password: t3TujvPXJxUcgdm!</div>
+                </div>
+              </div>
+              
               {auth.error && (
                 <div className="text-red-600 text-sm text-center p-3 bg-red-50 rounded-md">
                   <div className="font-medium">Có lỗi xảy ra khi đăng nhập:</div>
