@@ -385,7 +385,7 @@ export function CreditScoreResults({
         </div>
 
         {apiScoreData && getLLMDetails(apiScoreData).length > 0 && (
-          <div className="my-6 border-t border-dashed border-gray-300 w-full" />
+          <div className="my-4 border-t border-dashed border-gray-300 w-full" />
         )}
 
         {/* Individual Scores */}
@@ -439,12 +439,12 @@ export function CreditScoreResults({
           )}
 
         {apiScoreData && getLLMDetails(apiScoreData).length > 0 && (
-          <div className="my-6 border-t border-dashed border-gray-300 w-full" />
+          <div className="my-4 border-t border-dashed border-gray-300 w-full" />
         )}
 
         {/* Evidence/Explanations per File */}
         {apiScoreData && getLLMDetails(apiScoreData).length > 0 && (
-          <div className="space-y-6">
+          <div className="space-y-4">
             <h3 className="text-lg font-semibold text-gray-800 text-center">
               {language === "vi"
                 ? "Giải Thích Chi Tiết Theo Tệp"

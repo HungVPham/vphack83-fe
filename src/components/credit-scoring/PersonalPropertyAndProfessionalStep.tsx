@@ -151,6 +151,7 @@ export function PersonalPropertyAndProfessionalStep() {
   const [workWards, setWorkWards] = useState<Ward[]>([]);
   const [isLoadingWorkWards, setIsLoadingWorkWards] = useState(false);
   const [isLoadingWorkProvinces, setIsLoadingWorkProvinces] = useState(false);
+  const [sameAsPermanentAddress, setSameAsPermanentAddress] = useState(false);
 
   // Personal Property options
   const realtyOptions = [
@@ -227,6 +228,16 @@ export function PersonalPropertyAndProfessionalStep() {
 
     loadWorkWardsForPrefilledProvince();
   }, [formData.workProvince, workProvinces, workWards.length]);
+
+  useEffect(() => {
+    if (sameAsPermanentAddress) {
+      updateFormData({
+        workProvince: formData.province || "",
+        workWard: formData.ward || "",
+      });
+    }
+    // eslint-disable-next-line
+  }, [sameAsPermanentAddress, formData.province, formData.ward]);
 
   const handleWorkProvinceChange = async (provinceValue: string) => {
     updateFormData({ workProvince: provinceValue, workWard: "" });
@@ -480,12 +491,26 @@ export function PersonalPropertyAndProfessionalStep() {
               />
             </div>
             <div className="text-left">
-              <Label
-                htmlFor="workProvince"
-                className="text-sm font-medium text-gray-700"
-              >
-                {t("professionalProfile.workProvince")}
-              </Label>
+              <div className="flex items-center justify-between mb-2">
+                <Label
+                  htmlFor="workProvince"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  {t("professionalProfile.workProvince")}
+                </Label>
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="sameAsPermanentAddress"
+                    checked={sameAsPermanentAddress}
+                    onChange={(e) => setSameAsPermanentAddress(e.target.checked)}
+                    className="mr-2"
+                  />
+                  <label htmlFor="sameAsPermanentAddress" className="text-sm text-gray-700">
+                    {t("professionalProfile.sameAsPermanentAddress") || "Same as permanent address"}
+                  </label>
+                </div>
+              </div>
               <Select
                 id="workProvince"
                 options={workProvinceOptions}
@@ -498,7 +523,7 @@ export function PersonalPropertyAndProfessionalStep() {
                 }
                 searchable={!isLoadingWorkProvinces}
                 searchPlaceholder={t("common.searchPlaceholder")}
-                disabled={isLoadingWorkProvinces}
+                disabled={isLoadingWorkProvinces || sameAsPermanentAddress}
                 className="mt-1"
               />
             </div>
@@ -524,7 +549,7 @@ export function PersonalPropertyAndProfessionalStep() {
                 }
                 searchable={!!formData.workProvince && !isLoadingWorkWards}
                 searchPlaceholder={t("common.searchPlaceholder")}
-                disabled={!formData.workProvince || isLoadingWorkWards}
+                disabled={!formData.workProvince || isLoadingWorkWards || sameAsPermanentAddress}
                 className="mt-1"
               />
             </div>
