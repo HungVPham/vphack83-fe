@@ -493,11 +493,11 @@ export function CreditScoreResults({
                             const categoryScore =
                               fileDetail.scores[key]?.score || 0;
                             const scorePercentage = Math.round(
-                              (categoryScore / 5) * 100
-                            ); // Convert 1-5 scale to percentage
+                              (categoryScore / 10) * 100
+                            ); // Convert 1-10 scale to percentage
                             const scoreColor = getScoreColor(scorePercentage);
                             const riskCategory = getRiskCategoryLabel(
-                              categoryScore / 5,
+                              categoryScore / 10,
                               language
                             ); // Convert to 0-1 scale for risk category
 
