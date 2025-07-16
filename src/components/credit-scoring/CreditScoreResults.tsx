@@ -374,55 +374,63 @@ export function CreditScoreResults({
             </div>
           )}
         </div>
-        <div className="my-6 border-t border-dashed border-gray-300 w-full" />
+
+        {apiScoreData?.llm_details && apiScoreData.llm_details.length > 0 && (
+          <div className="my-6 border-t border-dashed border-gray-300 w-full" />
+        )}
 
         {/* Individual Scores */}
-        {apiScoreData?.individual_scores && (
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-800 text-center">
-              {language === "vi"
-                ? "Điểm Cá Nhân Dựa Trên Dữ Liệu Bổ Sung"
-                : "Trait Scores Based On Uploaded Documents"}
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {Object.entries(apiScoreData.individual_scores).map(
-                ([key, value]) => {
-                  const scorePercentage = Math.round(value * 100);
-                  const scoreLabel = getScoreLabel(key, language);
-                  const scoreColor = getScoreColor(scorePercentage);
-                  const riskCategory = getRiskCategoryLabel(value, language);
+        {apiScoreData?.individual_scores &&
+          apiScoreData.llm_details.length > 0 && (
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-gray-800 text-center">
+                {language === "vi"
+                  ? "Điểm Cá Nhân Dựa Trên Dữ Liệu Bổ Sung"
+                  : "Trait Scores Based On Uploaded Documents"}
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {Object.entries(apiScoreData.individual_scores).map(
+                  ([key, value]) => {
+                    const scorePercentage = Math.round(value * 100);
+                    const scoreLabel = getScoreLabel(key, language);
+                    const scoreColor = getScoreColor(scorePercentage);
+                    const riskCategory = getRiskCategoryLabel(value, language);
 
-                  return (
-                    <div key={key} className="bg-gray-50 rounded-lg p-4">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-medium text-gray-700 text-left">
-                          {scoreLabel}
-                        </span>
-                        <span
-                          className="text-sm text-white px-2 py-1 rounded-md text-right"
-                          style={{ backgroundColor: scoreColor }}
-                        >
-                          {riskCategory}
-                        </span>
+                    return (
+                      <div key={key} className="bg-gray-50 rounded-lg p-4">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-sm font-medium text-gray-700 text-left">
+                            {scoreLabel}
+                          </span>
+                          <span
+                            className="text-sm text-white px-2 py-1 rounded-md text-right"
+                            style={{ backgroundColor: scoreColor }}
+                          >
+                            {riskCategory}
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            className="h-2 rounded-full transition-all duration-500"
+                            style={{
+                              width: `${scorePercentage}%`,
+                              backgroundColor: scoreColor,
+                            }}
+                          />
+                        </div>
+                        <p className="text-xs text-gray-600 leading-relaxed mb-2">
+                          {scorePercentage}%
+                        </p>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div
-                          className="h-2 rounded-full transition-all duration-500"
-                          style={{
-                            width: `${scorePercentage}%`,
-                            backgroundColor: scoreColor,
-                          }}
-                        />
-                      </div>
-                      <p className="text-xs text-gray-600 leading-relaxed mb-2">
-                        {scorePercentage}%
-                      </p>
-                    </div>
-                  );
-                }
-              )}
+                    );
+                  }
+                )}
+              </div>
             </div>
-          </div>
+          )}
+
+        {apiScoreData?.llm_details && apiScoreData.llm_details.length > 0 && (
+          <div className="my-6 border-t border-dashed border-gray-300 w-full" />
         )}
 
         {/* Evidence/Explanations per File */}
