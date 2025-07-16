@@ -139,7 +139,7 @@ export function CreditScoreResults({
       return {
         score,
         maxScore,
-        color: "#00b74f",
+        color: "#00b74f", // No change
         label: t("creditScore.lowRisk"),
         labelColor: "from-[#00b74f] to-[#00b74f]",
       };
@@ -147,25 +147,25 @@ export function CreditScoreResults({
       return {
         score,
         maxScore,
-        color: "#90EE90",
+        color: "#80be27", // Updated from #90EE90
         label: t("creditScore.mediumLowRisk"),
-        labelColor: "from-[#90EE90] to-[#00b74f]",
+        labelColor: "from-[#80be27] to-[#00b74f]", // Updated
       };
     } else if (score >= 25) {
       return {
         score,
         maxScore,
-        color: "#FFD700",
+        color: "#e66200", // Updated from #FFD700
         label: t("creditScore.mediumRisk"),
-        labelColor: "from-[#FFD700] to-[#90EE90]",
+        labelColor: "from-[#e66200] to-[#80be27]", // Updated
       };
     } else {
       return {
         score,
         maxScore,
-        color: "#E70000",
+        color: "#E70000", // No change
         label: t("creditScore.highRisk"),
-        labelColor: "from-[#E70000] to-[#FF8C00]",
+        labelColor: "from-[#E70000] to-[#e66200]", // Updated
       };
     }
   };
@@ -204,8 +204,8 @@ export function CreditScoreResults({
   // Helper function to get score color
   const getScoreColor = (score: number): string => {
     if (score >= 75) return "#00b74f";
-    if (score >= 50) return "#90EE90";
-    if (score >= 25) return "#FFD700";
+    if (score >= 50) return "#80be27"; // Updated from #90EE90
+    if (score >= 25) return "#e66200"; // Updated from #FFD700
     return "#E70000";
   };
 
@@ -374,12 +374,15 @@ export function CreditScoreResults({
             </div>
           )}
         </div>
+        <div className="my-6 border-t border-dashed border-gray-300 w-full" />
 
         {/* Individual Scores */}
         {apiScoreData?.individual_scores && (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-gray-800 text-center">
-              {language === "vi" ? "Điểm Chi Tiết" : "Individual Scores"}
+              {language === "vi"
+                ? "Điểm Cá Nhân Dựa Trên Dữ Liệu Bổ Sung"
+                : "Trait Scores Based On Uploaded Documents"}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {Object.entries(apiScoreData.individual_scores).map(
