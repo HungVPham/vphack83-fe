@@ -42,6 +42,7 @@ interface ApiResponse {
   overall_score: number;
   individual_scores: IndividualScores;
   llm_details: LLMDetails[];
+  translated_llm_details?: LLMDetails[];
   debug_info: any;
   timestamp: string;
   request_id: string;
@@ -236,6 +237,14 @@ export function CreditScoreResults({
     return labels[classification]?.[language as "vi" | "en"] || classification;
   };
 
+  // Helper function to get the appropriate LLM details based on language
+  const getLLMDetails = (apiData: ApiResponse): LLMDetails[] => {
+    if (language === "vi" && apiData.translated_llm_details) {
+      return apiData.translated_llm_details;
+    }
+    return apiData.llm_details;
+  };
+
   // Toggle function for expanding/collapsing file details
   const toggleFileExpansion = (fileIndex: number) => {
     setExpandedFiles((prev) => {
@@ -375,13 +384,13 @@ export function CreditScoreResults({
           )}
         </div>
 
-        {apiScoreData?.llm_details && apiScoreData.llm_details.length > 0 && (
+        {apiScoreData && getLLMDetails(apiScoreData).length > 0 && (
           <div className="my-6 border-t border-dashed border-gray-300 w-full" />
         )}
 
         {/* Individual Scores */}
         {apiScoreData?.individual_scores &&
-          apiScoreData.llm_details.length > 0 && (
+          getLLMDetails(apiScoreData).length > 0 && (
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-800 text-center">
                 {language === "vi"
@@ -429,19 +438,19 @@ export function CreditScoreResults({
             </div>
           )}
 
-        {apiScoreData?.llm_details && apiScoreData.llm_details.length > 0 && (
+        {apiScoreData && getLLMDetails(apiScoreData).length > 0 && (
           <div className="my-6 border-t border-dashed border-gray-300 w-full" />
         )}
 
         {/* Evidence/Explanations per File */}
-        {apiScoreData?.llm_details && apiScoreData.llm_details.length > 0 && (
+        {apiScoreData && getLLMDetails(apiScoreData).length > 0 && (
           <div className="space-y-6">
             <h3 className="text-lg font-semibold text-gray-800 text-center">
               {language === "vi"
                 ? "Giải Thích Chi Tiết Theo Tệp"
                 : "Detailed Explanations by File"}
             </h3>
-            {apiScoreData.llm_details.map((fileDetail, fileIndex) => {
+            {getLLMDetails(apiScoreData).map((fileDetail, fileIndex) => {
               const isExpanded = expandedFiles.has(fileIndex);
 
               return (
