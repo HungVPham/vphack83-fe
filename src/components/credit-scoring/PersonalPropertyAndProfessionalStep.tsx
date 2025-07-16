@@ -200,6 +200,34 @@ export function PersonalPropertyAndProfessionalStep() {
     loadProvinces();
   }, []);
 
+  // Handle prefilled work province data to load work wards automatically
+  useEffect(() => {
+    const loadWorkWardsForPrefilledProvince = async () => {
+      // Only load work wards if work province is set but work wards are empty (indicating prefilled data)
+      if (formData.workProvince && workProvinces.length > 0 && workWards.length === 0) {
+        setIsLoadingWorkWards(true);
+        try {
+          await mockApiDelay(100);
+          
+          // Find the selected work province object
+          const selectedProvinceObj = workProvinces.find(
+            (p) => p && (p.id === formData.workProvince || p.province === formData.workProvince)
+          );
+          
+          if (selectedProvinceObj && selectedProvinceObj.wards) {
+            setWorkWards(selectedProvinceObj.wards);
+          }
+        } catch (error) {
+          console.error("Error loading work wards for prefilled province:", error);
+        } finally {
+          setIsLoadingWorkWards(false);
+        }
+      }
+    };
+
+    loadWorkWardsForPrefilledProvince();
+  }, [formData.workProvince, workProvinces, workWards.length]);
+
   const handleWorkProvinceChange = async (provinceValue: string) => {
     updateFormData({ workProvince: provinceValue, workWard: "" });
     setWorkWards([]);
@@ -243,12 +271,12 @@ export function PersonalPropertyAndProfessionalStep() {
         }))
     : [];
 
-  // Format number to Vietnamese currency format
+  // Format number to USD currency format
   const formatCurrency = (value: string) => {
     if (!value) return "";
     const number = value.replace(/\D/g, "");
     if (!number) return "";
-    return new Intl.NumberFormat("vi-VN").format(parseInt(number));
+    return new Intl.NumberFormat("en-US", { style: 'currency', currency: 'USD' }).format(parseInt(number));
   };
 
   const handleAmountChange = (
@@ -406,7 +434,7 @@ export function PersonalPropertyAndProfessionalStep() {
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pr-12"
                 />
                 <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-gray-500">
-                  VND
+                  USD
                 </div>
               </div>
             </div>

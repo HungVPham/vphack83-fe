@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from '../ui/button';
 import { ChevronDown, User } from 'lucide-react';
 import { useForm } from '../../lib/FormContext';
@@ -52,14 +52,14 @@ const personas: PersonaData[] = [
       fullName: "Nguyễn Thị Mai",
       CODE_GENDER: "F",
       NAME_FAMILY_STATUS: "Single / not married",
-      hasChildren: "No",
+      hasChildren: "no",
       CNT_CHILDREN: 0,
       DAYS_BIRTH: -7300, // ~20 years old
       phoneNumber: "0987654321",
       FLAG_MOBIL: 1,
       email: "mai.nguyen@gmail.com",
       FLAG_EMAIL: 1,
-      province: "Đồng Nai",
+      province: "28",
       ward: "Phường Biên Hòa",
       REGION_RATING_CLIENT: 1,
       REGION_RATING_CLIENT_W_CITY: 1,
@@ -71,12 +71,12 @@ const personas: PersonaData[] = [
       OWN_CAR_AGE: null,
       NAME_EDUCATION_TYPE: "Higher education",
       NAME_INCOME_TYPE: "Student",
-      AMT_INCOME_TOTAL: 24000000, // incomeMonthly * 12
-      incomeMonthly: 2000000,
-      OCCUPATION_TYPE: "Student",
+      AMT_INCOME_TOTAL: 960, // incomeMonthly * 12
+      incomeMonthly: 80,
+      OCCUPATION_TYPE: "Core staff",
       ORGANIZATION_TYPE: "School",
-      workProvince: "Hồ Chí Minh",
-      workWard: "Phường Vũng Tàu",
+      workProvince: "29",
+      workWard: "Phường Tam Thắng",
       REG_REGION_NOT_WORK_REGION: 1, // Different provinces
       documents: [],
       file_uploads: []
@@ -88,14 +88,14 @@ const personas: PersonaData[] = [
       fullName: "Trần Văn Minh",
       CODE_GENDER: "M",
       NAME_FAMILY_STATUS: "Separated",
-      hasChildren: "Yes",
+      hasChildren: "yes",
       CNT_CHILDREN: 2,
       DAYS_BIRTH: -16425, // ~45 years old
       phoneNumber: "0912345678",
       FLAG_MOBIL: 1,
       email: "minh.tran@yahoo.com",
       FLAG_EMAIL: 1,
-      province: "Hồ Chí Minh",
+      province: "29",
       ward: "Phường Vũng Tàu",
       REGION_RATING_CLIENT: 1,
       REGION_RATING_CLIENT_W_CITY: 1,
@@ -107,12 +107,12 @@ const personas: PersonaData[] = [
       OWN_CAR_AGE: null,
       NAME_EDUCATION_TYPE: "Secondary / secondary special",
       NAME_INCOME_TYPE: "Working",
-      AMT_INCOME_TOTAL: 180000000, // incomeMonthly * 12
-      incomeMonthly: 15000000,
+      AMT_INCOME_TOTAL: 7200, // incomeMonthly * 12
+      incomeMonthly: 600,
       OCCUPATION_TYPE: "Laborers",
       ORGANIZATION_TYPE: "Business Entity Type 3",
-      workProvince: "Hồ Chí Minh",
-      workWard: "Phường Tam Thắng",
+      workProvince: "29",
+      workWard: "Phường Vũng Tàu",
       REG_REGION_NOT_WORK_REGION: 0, // Same province
       documents: [],
       file_uploads: []
@@ -124,14 +124,14 @@ const personas: PersonaData[] = [
       fullName: "Lê Thị Hồng",
       CODE_GENDER: "F",
       NAME_FAMILY_STATUS: "Widow",
-      hasChildren: "Yes",
+      hasChildren: "yes",
       CNT_CHILDREN: 3,
       DAYS_BIRTH: -23725, // ~65 years old
       phoneNumber: "0903456789",
       FLAG_MOBIL: 1,
       email: "hong.le@gmail.com",
       FLAG_EMAIL: 1,
-      province: "Đồng Nai",
+      province: "28",
       ward: "Phường Trấn Biên",
       REGION_RATING_CLIENT: 1,
       REGION_RATING_CLIENT_W_CITY: 1,
@@ -143,12 +143,12 @@ const personas: PersonaData[] = [
       OWN_CAR_AGE: null,
       NAME_EDUCATION_TYPE: "Higher education",
       NAME_INCOME_TYPE: "Pensioner",
-      AMT_INCOME_TOTAL: 96000000, // incomeMonthly * 12
-      incomeMonthly: 8000000,
+      AMT_INCOME_TOTAL: 3840, // incomeMonthly * 12
+      incomeMonthly: 320,
       OCCUPATION_TYPE: "Medicine staff",
       ORGANIZATION_TYPE: "Government",
-      workProvince: "Đồng Nai",
-      workWard: "Phường Trấn Biên",
+      workProvince: "28",
+      workWard: "Phường Biên Hòa",
       REG_REGION_NOT_WORK_REGION: 0, // Same province
       documents: [],
       file_uploads: []

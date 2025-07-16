@@ -67,6 +67,43 @@ export function PersonalInformationStep() {
     loadProvinces();
   }, []);
 
+  // Handle prefilled province data to load wards automatically
+  useEffect(() => {
+    const loadWardsForPrefilledProvince = async () => {
+      // Only load wards if province is set but wards are empty (indicating prefilled data)
+      if (formData.province && provinces.length > 0 && wards.length === 0) {
+        setIsLoadingWards(true);
+        try {
+          await mockApiDelay(100);
+          
+          // Find the selected province object
+          const selectedProvinceObj = provinces.find(
+            (p) => p && (p.id === formData.province || p.province === formData.province)
+          );
+          
+          if (selectedProvinceObj && selectedProvinceObj.wards) {
+            setWards(selectedProvinceObj.wards);
+            
+            // Set region rating fields if not already set
+            if (!formData.REGION_RATING_CLIENT) {
+              updateFormData({
+                REGION_POPULATION_RELATIVE: selectedProvinceObj.population_normalized,
+                REGION_RATING_CLIENT: selectedProvinceObj.region_rating,
+                REGION_RATING_CLIENT_W_CITY: selectedProvinceObj.region_rating_w_city
+              });
+            }
+          }
+        } catch (error) {
+          console.error("Error loading wards for prefilled province:", error);
+        } finally {
+          setIsLoadingWards(false);
+        }
+      }
+    };
+
+    loadWardsForPrefilledProvince();
+  }, [formData.province, provinces, wards.length, formData.REGION_RATING_CLIENT, updateFormData]);
+
   const handleProvinceChange = async (provinceValue: string) => {
     updateFormData({ province: provinceValue, ward: "" }); // Reset ward selection
     setWards([]); // Clear wards
