@@ -34,11 +34,10 @@ const translations = {
     'creditScore.suggestions': 'Gợi ý cải thiện',
     
     // Score labels
-    'creditScore.excellent': 'Xuất sắc',
-    'creditScore.veryGood': 'Rất tốt',
-    'creditScore.good': 'Tốt',
-    'creditScore.fair': 'Khá',
-    'creditScore.poor': 'Yếu',
+    'creditScore.lowRisk': 'Rủi ro thấp',
+    'creditScore.mediumLowRisk': 'Rủi ro trung bình thấp',
+    'creditScore.mediumRisk': 'Rủi ro trung bình',
+    'creditScore.highRisk': 'Rủi ro cao',
     
     // Static strengths
     'creditScore.strength.utilityPayments': 'Thanh toán hóa đơn tiện ích đúng hạn',
@@ -49,18 +48,18 @@ const translations = {
     'creditScore.suggestion.linkBankAccount': 'Liên kết tài khoản ngân hàng chính để có bức tranh hoàn chỉnh hơn',
     'creditScore.suggestion.autoPayments': 'Thiết lập thanh toán tự động cho các hóa đơn thường xuyên',
     'creditScore.suggestion.buildIncomeHistory': 'Xây dựng lịch sử thu nhập ổn định qua các kênh chính thức',
+    'creditScore.startNewForm': 'Bắt đầu đánh giá mới',
     
     // Data Input Form
     'dataInputForm.title': 'Đánh giá tín dụng AI',
     'dataInputForm.step.personalInfo': 'Thông Tin Cá Nhân',
-    'dataInputForm.step.personalProperty': 'Thông Tin Tài Sản Cá Nhân',
-    'dataInputForm.step.loanInfo': 'Thông Tin Khoản Vay',
-    'dataInputForm.step.professionalProfile': 'Hồ Sơ Nghề Nghiệp',
-    'dataInputForm.step.financialDocuments': 'Tài Liệu Tài Chính',
+    'dataInputForm.step.personalPropertyAndProfessional': 'Thông Tin Tài Sản & Nghề Nghiệp',
+    'dataInputForm.step.financialDocuments': 'Dữ Liệu Thay Thế',
     'dataInputForm.stepCounter': 'Bước {current} / {total}',
     'dataInputForm.button.back': 'Quay lại',
     'dataInputForm.button.continue': 'Tiếp tục',
     'dataInputForm.button.complete': 'Hoàn thành',
+    'dataInputForm.button.submitting': 'Đang xử lý...',
 
     // Personal Information Step
     'personalInfo.title': 'Thông Tin Cá Nhân',
@@ -110,28 +109,31 @@ const translations = {
     'professionalProfile.organizationType': 'Loại tổ chức',
     'professionalProfile.organizationType.placeholder': 'Chọn loại tổ chức',
     'professionalProfile.workProvince': 'Nơi làm việc - Tỉnh/Thành phố',
+    'professionalProfile.sameAsPermanentAddress': 'Giống với địa chỉ thường trú',
     'professionalProfile.workProvince.placeholder': 'Chọn tỉnh/thành phố nơi làm việc',
     'professionalProfile.workWard': 'Nơi làm việc - Phường/Xã',
     'professionalProfile.workWard.placeholder': 'Chọn phường/xã nơi làm việc',
     'professionalProfile.workWard.placeholderNoProvince': 'Vui lòng chọn tỉnh/thành phố trước',
 
-    // Loan Information Step
-    'loanInfo.title': 'Thông Tin Khoản Vay',
-    'loanInfo.loanType': 'Loại hình vay',
-    'loanInfo.loanType.cash': 'Vay tiền mặt',
-    'loanInfo.loanType.revolving': 'Vay tín dụng tuần hoàn',
-    'loanInfo.loanAmount': 'Số tiền muốn vay',
-    'loanInfo.hasPurchase': 'Bạn có dùng khoản vay này để tài trợ cho một khoản mua hàng không?',
-    'loanInfo.hasPurchase.yes': 'Có',
-    'loanInfo.hasPurchase.no': 'Không',
-    'loanInfo.purchaseAmount': 'Giá trị khoản mua hàng',
 
     // Document Upload Step
-    'documentUpload.title': 'Tài Liệu Tài Chính',
-    'documentUpload.description': 'Cung cấp thêm tài liệu giúp AI của chúng tôi tạo ra điểm số chính xác và công bằng hơn cho bạn.',
+    'documentUpload.title': 'Dữ Liệu Thay Thế',
+    'documentUpload.description': 'Cung cấp dữ liệu thay thế để AI có thể đánh giá tín dụng một cách toàn diện và chính xác hơn.',
     'documentUpload.dragDrop': 'Kéo thả tệp hoặc nhấn để tải lên',
-    'documentUpload.acceptedFormats': 'Chấp nhận: PDF, JPG, PNG. Tối đa 5MB.',
+    'documentUpload.acceptedFormats': 'Chấp nhận: JSON, CSV, PDF, JPG, PNG. Tối đa 10MB.',
     'documentUpload.uploaded': 'Đã tải lên',
+    'documentUpload.uploadSampleData': 'Tải lên dữ liệu mẫu',
+    'documentUpload.sampleDataDescription': 'Sử dụng dữ liệu mẫu để kiểm tra',
+
+    // Alternative Data Categories
+    'alternativeData.bills.title': 'Hóa Đơn & Chứng Từ',
+    'alternativeData.bills.description': 'Hóa đơn điện, nước, internet, điện thoại, thuê nhà',
+    'alternativeData.shopping.title': 'Lịch Sử Mua Sắm',
+    'alternativeData.shopping.description': 'Giao dịch online, lịch sử đơn hàng, thói quen chi tiêu',
+    'alternativeData.socialMedia.title': 'Mạng Xã Hội',
+    'alternativeData.socialMedia.description': 'Dữ liệu Facebook, Instagram, TikTok, LinkedIn',
+    'alternativeData.other.title': 'Tài Liệu Khác',
+    'alternativeData.other.description': 'Bảng điểm, chứng chỉ, giấy tờ cá nhân, báo cáo y tế',
 
     // Personal Property Step
     'personalProperty.title': 'Thông Tin Tài Sản Cá Nhân',
@@ -144,6 +146,28 @@ const translations = {
     'personalProperty.ownsVehicle.no': 'Không',
     'personalProperty.ownsVehicle.yes': 'Có',
     'personalProperty.vehicleAge': 'Phương tiện di chuyển của bạn đã sử dụng bao lâu? (tháng)',
+
+    // Introduction Section
+    'introduction.title': 'Đánh giá tín dụng AI',
+    'introduction.subtitle': 'Hệ thống đánh giá tín dụng thông minh và chính xác',
+    'introduction.description': 'Chúng tôi sử dụng trí tuệ nhân tạo tiên tiến để đánh giá điểm tín dụng của bạn một cách nhanh chóng, chính xác và công bằng. Quy trình đơn giản chỉ với 3 bước.',
+    'introduction.features.title': 'Tính năng nổi bật',
+    'introduction.features.ai': 'Đánh giá bằng AI tiên tiến',
+    'introduction.features.fast': 'Kết quả nhanh chóng trong vài phút',
+    'introduction.features.secure': 'Bảo mật thông tin tuyệt đối',
+    'introduction.features.accurate': 'Độ chính xác cao với dữ liệu toàn diện',
+    'introduction.button.start': 'Bắt đầu đánh giá',
+    'introduction.steps.title': 'Quy trình đánh giá gồm 3 bước',
+    'introduction.steps.personal': 'Thông tin cá nhân',
+    'introduction.steps.propertyProfessional': 'Thông tin tài sản & nghề nghiệp',
+    'introduction.steps.alternativeData': 'Dữ liệu thay thế',
+
+    // Form Prefill
+    'formPrefill.demoPersonas': 'Dữ liệu mẫu',
+    'formPrefill.selectPersona': 'Chọn persona',
+    'formPrefill.persona.youngGenz': 'GenZ trẻ nghèo',
+    'formPrefill.persona.middleAgedWorker': 'Nhân viên trung niên ly hôn',
+    'formPrefill.persona.retiredNurse': 'Y tá nghỉ hưu',
 
     // Common
     'common.loading': 'Đang tải...',
@@ -265,11 +289,10 @@ const translations = {
     'creditScore.suggestions': 'Suggestions for Improvement',
     
     // Score labels
-    'creditScore.excellent': 'Excellent',
-    'creditScore.veryGood': 'Very Good',
-    'creditScore.good': 'Good',
-    'creditScore.fair': 'Fair',
-    'creditScore.poor': 'Poor',
+    'creditScore.lowRisk': 'Low Risk',
+    'creditScore.mediumLowRisk': 'Medium Low Risk',
+    'creditScore.mediumRisk': 'Medium Risk',
+    'creditScore.highRisk': 'High Risk',
     
     // Static strengths
     'creditScore.strength.utilityPayments': 'Timely utility bill payments',
@@ -280,18 +303,18 @@ const translations = {
     'creditScore.suggestion.linkBankAccount': 'Link your primary bank account for a more complete picture',
     'creditScore.suggestion.autoPayments': 'Set up automatic payments for regular bills',
     'creditScore.suggestion.buildIncomeHistory': 'Build stable income history through official channels',
+    'creditScore.startNewForm': 'Start New Assessment',
     
     // Data Input Form
     'dataInputForm.title': 'AI Credit Assessment',
     'dataInputForm.step.personalInfo': 'Personal Information',
-    'dataInputForm.step.personalProperty': 'Personal Property Information',
-    'dataInputForm.step.loanInfo': 'Loan Information',
-    'dataInputForm.step.professionalProfile': 'Professional Profile',
-    'dataInputForm.step.financialDocuments': 'Financial Documents',
+    'dataInputForm.step.personalPropertyAndProfessional': 'Property & Professional Information',
+    'dataInputForm.step.financialDocuments': 'Alternative Data',
     'dataInputForm.stepCounter': 'Step {current} / {total}',
     'dataInputForm.button.back': 'Back',
     'dataInputForm.button.continue': 'Continue',
     'dataInputForm.button.complete': 'Complete',
+    'dataInputForm.button.submitting': 'Processing...',
 
     // Personal Information Step
     'personalInfo.title': 'Personal Information',
@@ -341,28 +364,31 @@ const translations = {
     'professionalProfile.organizationType': 'Organization Type',
     'professionalProfile.organizationType.placeholder': 'Choose organization type',
     'professionalProfile.workProvince': 'Work Location - Province/City',
+    'professionalProfile.sameAsPermanentAddress': 'Same as permanent address',
     'professionalProfile.workProvince.placeholder': 'Choose work province/city',
     'professionalProfile.workWard': 'Work Location - Ward/Commune',
     'professionalProfile.workWard.placeholder': 'Choose work ward/commune',
     'professionalProfile.workWard.placeholderNoProvince': 'Please choose province/city first',
 
-    // Loan Information Step
-    'loanInfo.title': 'Loan Information',
-    'loanInfo.loanType': 'Loan Type',
-    'loanInfo.loanType.cash': 'Cash Loan',
-    'loanInfo.loanType.revolving': 'Revolving Credit Loan',
-    'loanInfo.loanAmount': 'Loan Amount',
-    'loanInfo.hasPurchase': 'Are you using this loan to finance a purchase?',
-    'loanInfo.hasPurchase.yes': 'Yes',
-    'loanInfo.hasPurchase.no': 'No',
-    'loanInfo.purchaseAmount': 'Purchase Value',
 
     // Document Upload Step
-    'documentUpload.title': 'Financial Documents',
-    'documentUpload.description': 'Provide additional documents to help our AI create a more accurate and fair score for you.',
+    'documentUpload.title': 'Alternative Data',
+    'documentUpload.description': 'Provide alternative data sources to help AI assess your creditworthiness more comprehensively and accurately.',
     'documentUpload.dragDrop': 'Drag and drop files or click to upload',
-    'documentUpload.acceptedFormats': 'Accepts: PDF, JPG, PNG. Maximum 5MB.',
+    'documentUpload.acceptedFormats': 'Accepts: JSON, CSV, PDF, JPG, PNG. Maximum 10MB.',
     'documentUpload.uploaded': 'Uploaded',
+    'documentUpload.uploadSampleData': 'Upload Sample Data',
+    'documentUpload.sampleDataDescription': 'Use sample social media data for testing',
+
+    // Alternative Data Categories
+    'alternativeData.bills.title': 'Bills & Receipts',
+    'alternativeData.bills.description': 'Utility bills, phone bills, internet, rent payments, receipts',
+    'alternativeData.shopping.title': 'Shopping History',
+    'alternativeData.shopping.description': 'Online transactions, order history, spending patterns',
+    'alternativeData.socialMedia.title': 'Social Media',
+    'alternativeData.socialMedia.description': 'Facebook, Instagram, TikTok, LinkedIn data exports',
+    'alternativeData.other.title': 'Other Documents',
+    'alternativeData.other.description': 'Report cards, certificates, personal documents, medical reports',
 
     // Personal Property Step
     'personalProperty.title': 'Personal Property Information',
@@ -375,6 +401,28 @@ const translations = {
     'personalProperty.ownsVehicle.no': 'No',
     'personalProperty.ownsVehicle.yes': 'Yes',
     'personalProperty.vehicleAge': 'How long have you used your vehicle? (months)',
+
+    // Introduction Section
+    'introduction.title': 'AI Credit Assessment',
+    'introduction.subtitle': 'Smart and accurate credit scoring system',
+    'introduction.description': 'We use advanced artificial intelligence to assess your credit score quickly, accurately and fairly. Simple process with just 3 steps.',
+    'introduction.features.title': 'Key Features',
+    'introduction.features.ai': 'Advanced AI-powered assessment',
+    'introduction.features.fast': 'Fast results in minutes',
+    'introduction.features.secure': 'Absolute information security',
+    'introduction.features.accurate': 'High accuracy with comprehensive data',
+    'introduction.button.start': 'Start Assessment',
+    'introduction.steps.title': '3-step assessment process',
+    'introduction.steps.personal': 'Personal information',
+    'introduction.steps.propertyProfessional': 'Property & professional information',
+    'introduction.steps.alternativeData': 'Alternative data upload',
+
+    // Form Prefill
+    'formPrefill.demoPersonas': 'Demo Personas',
+    'formPrefill.selectPersona': 'Select a persona',
+    'formPrefill.persona.youngGenz': 'Young GenZ Student',
+    'formPrefill.persona.middleAgedWorker': 'Middle-aged Divorced Worker',
+    'formPrefill.persona.retiredNurse': 'Retired Nurse',
 
     // Common
     'common.loading': 'Loading...',
