@@ -2478,7 +2478,6 @@
             "population_normalized": 0.100146964,
             "region_rating": 1,
             "region_rating_w_city": 1
-
         },
         {
             "province": "Hải Phòng",
@@ -5608,7 +5607,7 @@
             ],
             "population": 543050,
             "population_normalized": 0.039904327,
-            "region_rating": 3, 
+            "region_rating": 3,
             "region_rating_w_city": 3
         },
         {
@@ -6566,7 +6565,7 @@
             ],
             "population": 1731600,
             "population_normalized": 0.127241197,
-            "region_rating": 3, 
+            "region_rating": 3,
             "region_rating_w_city": 3
         },
         {
@@ -8104,9 +8103,8 @@
             ],
             "population": 1694500,
             "population_normalized": 0.12451502,
-            "region_rating": 2, 
+            "region_rating": 2,
             "region_rating_w_city": 2
-
         },
         {
             "province": "Lạng Sơn",
@@ -10247,7 +10245,7 @@
             ],
             "population": 633980,
             "population_normalized": 0.046586033,
-            "region_rating": 3, 
+            "region_rating": 3,
             "region_rating_w_city": 3
         },
         {
@@ -10549,7 +10547,7 @@
             ],
             "population": 482100,
             "population_normalized": 0.035425607,
-            "region_rating": 3, 
+            "region_rating": 3,
             "region_rating_w_city": 3
         },
         {
@@ -14116,7 +14114,7 @@
             ],
             "population": 1317200,
             "population_normalized": 0.096790312,
-            "region_rating": 2, 
+            "region_rating": 2,
             "region_rating_w_city": 2
         },
         {
@@ -16577,11 +16575,10 @@
                     ]
                 }
             ],
-            "population": 1861700, 
+            "population": 1861700,
             "population_normalized": 0.136801187,
             "region_rating": 2,
             "region_rating_w_city": 2
-        
         },
         {
             "province": "Khánh Hòa",
@@ -18880,7 +18877,6 @@
             "population_normalized": 0.208049203,
             "region_rating": 3,
             "region_rating_w_city": 2
-
         },
         {
             "province": "Lâm Đồng",
@@ -20524,7 +20520,7 @@
             ],
             "population": 2959000,
             "population_normalized": 0.217432838,
-            "region_rating": 2, 
+            "region_rating": 2,
             "region_rating_w_city": 2
         },
         {
@@ -26437,7 +26433,7 @@
                     ]
                 }
             ],
-            "population": 2140600, 
+            "population": 2140600,
             "population_normalized": 0.15729528,
             "region_rating": 2,
             "region_rating_w_city": 2
