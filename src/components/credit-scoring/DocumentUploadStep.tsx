@@ -10,7 +10,9 @@ import {
 import { useLanguage } from "../../lib/LanguageContext";
 import { useForm } from "../../lib/FormContext";
 import { useAuth } from "react-oidc-context";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
 
 interface UploadedFile {
   file: File;
@@ -18,6 +20,40 @@ interface UploadedFile {
   uuid: string;
   uploading: boolean;
   error?: string;
+  url?: string; // Added for S3-uploaded files
+  contentType?: string; // Added for S3-uploaded files
+  isS3?: boolean; // Added to distinguish S3 files
+}
+
+// Function to get a presigned download URL for a given S3 key
+export async function getPresignedDownloadUrl(s3Key: string, idToken?: string): Promise<string | null> {
+  try {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+    if (idToken) {
+      headers['Authorization'] = `Bearer ${idToken}`;
+    }
+    const response = await fetch(import.meta.env.VITE_S3_UPLOAD_URL, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        operation: 'download',
+        s3Key,
+      })
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to get presigned download URL: ${response.status}`);
+    }
+    const data = await response.json();
+    if (!data.success) {
+      throw new Error(data.error || 'Failed to get presigned download URL');
+    }
+    return data.data.presignedUrl;
+  } catch (error) {
+    console.error('Error getting presigned download URL:', error);
+    return null;
+  }
 }
 
 export function DocumentUploadStep() {
@@ -26,6 +62,38 @@ export function DocumentUploadStep() {
   const auth = useAuth();
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [downloadLoading, setDownloadLoading] = useState<string | null>(null); // s3Key of file being downloaded
+
+  // Add S3-uploaded files to uploadedFiles on mount or when formData.file_uploads changes
+  useEffect(() => {
+    if (formData.file_uploads && Array.isArray(formData.file_uploads)) {
+      const s3Files = formData.file_uploads.map((upload) => ({
+        file: { name: upload.filename } as File,
+        s3Key: upload.s3_key,
+        uuid: upload.s3_key,
+        uploading: false,
+        url: (upload as any).url,
+        contentType: upload.content_type,
+        isS3: true,
+      }));
+      setUploadedFiles((prev) => {
+        // Remove local files that have the same name as an S3 file
+        const s3FileNames = new Set(s3Files.map(f => f.file.name));
+        const filteredPrev = prev.filter(
+          f => !(s3FileNames.has(f.file.name) && !f.isS3)
+        );
+        // Remove S3 files that are no longer in formData.file_uploads
+        const existingS3Keys = new Set(s3Files.map(f => f.s3Key));
+        const filteredPrevS3 = filteredPrev.filter(
+          f => !f.isS3 || existingS3Keys.has(f.s3Key)
+        );
+        // Add new S3 files
+        const existingS3KeysInPrev = new Set(filteredPrevS3.filter(f => f.isS3).map(f => f.s3Key));
+        const newS3Files = s3Files.filter(f => !existingS3KeysInPrev.has(f.s3Key));
+        return [...filteredPrevS3, ...newS3Files];
+      });
+    }
+  }, [formData.file_uploads]);
 
   // Helper function to get content type from file extension
   const getContentTypeFromExtension = (filename: string): string => {
@@ -181,10 +249,19 @@ export function DocumentUploadStep() {
 
   const removeFile = (fileToRemove: UploadedFile) => {
     setUploadedFiles(prev => prev.filter(f => f !== fileToRemove));
-    updateFormData({ 
-      documents: (formData.documents || []).filter(f => f !== fileToRemove.file),
-      file_uploads: (formData.file_uploads || []).filter(upload => upload.filename !== fileToRemove.file.name)
-    });
+    if (fileToRemove.isS3) {
+      // Remove from file_uploads
+      updateFormData({
+        file_uploads: (formData.file_uploads || []).filter(upload => upload.s3_key !== fileToRemove.s3Key),
+        documents: (formData.documents || []).filter(f => f.name !== fileToRemove.file.name)
+      });
+    } else {
+      // Remove from local uploads
+      updateFormData({
+        documents: (formData.documents || []).filter(f => f !== fileToRemove.file),
+        file_uploads: (formData.file_uploads || []).filter(upload => upload.filename !== fileToRemove.file.name)
+      });
+    }
   };
 
   const handleSampleDataUpload = () => {
@@ -202,6 +279,9 @@ export function DocumentUploadStep() {
       s3Key: "a9c713a3-c695-4239-9f52-e46ab7ad5bff.txt",
       uuid: "sample-uuid",
       uploading: false,
+      url: "https://example.com/test_document.txt", // Mock URL for sample data
+      contentType: "text/plain",
+      isS3: true,
     };
 
     // Add sample file to uploaded files list
@@ -219,6 +299,23 @@ export function DocumentUploadStep() {
         },
       ],
     });
+  };
+
+  // Handler for S3 file download
+  const handleS3Download = async (uploadedFile: UploadedFile) => {
+    setDownloadLoading(uploadedFile.s3Key);
+    try {
+      const url = await getPresignedDownloadUrl(uploadedFile.s3Key, auth.user?.id_token);
+      if (url) {
+        window.open(url, '_blank');
+      } else {
+        alert('Failed to get download link.');
+      }
+    } catch (e) {
+      alert('Failed to get download link.');
+    } finally {
+      setDownloadLoading(null);
+    }
   };
 
   return (
@@ -311,7 +408,7 @@ export function DocumentUploadStep() {
         </div>
 
         {/* Sample Data Upload Button */}
-        <div className="mt-4 text-center">
+        {/* <div className="mt-4 text-center">
           <button
             onClick={handleSampleDataUpload}
             className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#015aad] transition-colors"
@@ -323,7 +420,7 @@ export function DocumentUploadStep() {
             {t("documentUpload.sampleDataDescription") ||
               "Use sample social media data for testing"}
           </p>
-        </div>
+        </div> */}
 
         {uploadedFiles.length > 0 && (
           <div className="mt-4 space-y-2">
@@ -348,6 +445,17 @@ export function DocumentUploadStep() {
                 <span className="text-sm text-gray-700 flex-1">
                   {uploadedFile.file.name}
                 </span>
+                {/* Download button for S3 files */}
+                {uploadedFile.isS3 && (
+                  <button
+                    type="button"
+                    className="text-blue-600 hover:underline text-xs px-2 disabled:opacity-50"
+                    onClick={() => handleS3Download(uploadedFile)}
+                    disabled={downloadLoading === uploadedFile.s3Key}
+                  >
+                    <FontAwesomeIcon icon={faDownload} />
+                  </button>
+                )}
                 <span
                   className={`text-xs ml-auto ${
                     uploadedFile.error

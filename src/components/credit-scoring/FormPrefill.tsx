@@ -41,6 +41,7 @@ interface PersonaData {
       filename: string;
       s3_key: string;
       content_type: string;
+      url: string;
     }>;
   };
 }
@@ -79,7 +80,20 @@ const personas: PersonaData[] = [
       workWard: "Phường Tam Thắng",
       REG_REGION_NOT_WORK_REGION: 1, // Different provinces
       documents: [],
-      file_uploads: []
+      file_uploads: [
+        {
+          filename: "NguyenThiMaiPowerBill.md",
+          s3_key: "NguyenThiMaiPowerBill.md",
+          content_type: "text/markdown",
+          url: "https://vphack3.s3.ap-southeast-1.amazonaws.com/NguyenThiMaiPowerBill.md"
+        },
+        {
+          filename: "NguyenThiMaiFB.md",
+          s3_key: "NguyenThiMaiFB.md",
+          content_type: "text/markdown",
+          url: "https://vphack3.s3.ap-southeast-1.amazonaws.com/NguyenThiMaiFB.md"
+        }
+      ]
     }
   },
   {
@@ -115,7 +129,20 @@ const personas: PersonaData[] = [
       workWard: "Phường Vũng Tàu",
       REG_REGION_NOT_WORK_REGION: 0, // Same province
       documents: [],
-      file_uploads: []
+      file_uploads: [
+        {
+          filename: "NguyenVanMinhPowerBill.md",
+          s3_key: "NguyenVanMinhPowerBill.md",
+          content_type: "text/markdown",
+          url: "https://vphack3.s3.ap-southeast-1.amazonaws.com/NguyenVanMinhPowerBill.md"
+        },
+        {
+          filename: "NguyenVanMinhSocial.md",
+          s3_key: "NguyenVanMinhSocial.md",
+          content_type: "text/markdown",
+          url: "https://vphack3.s3.ap-southeast-1.amazonaws.com/NguyenVanMinhSocial.md"
+        }
+      ]
     }
   },
   {
@@ -151,7 +178,20 @@ const personas: PersonaData[] = [
       workWard: "Phường Biên Hòa",
       REG_REGION_NOT_WORK_REGION: 0, // Same province
       documents: [],
-      file_uploads: []
+      file_uploads: [
+        {
+          filename: "LeThiHongShopping.md",
+          s3_key: "LeThiHongShopping.md",
+          content_type: "text/markdown",
+          url: "https://vphack3.s3.ap-southeast-1.amazonaws.com/LeThiHongShopping.md"
+        },
+        {
+          filename: "LeThiHongSocial.md",
+          s3_key: "LeThiHongSocial.md",
+          content_type: "text/markdown",
+          url: "https://vphack3.s3.ap-southeast-1.amazonaws.com/LeThiHongSocial.md"
+        }
+      ]
     }
   }
 ];
@@ -162,7 +202,11 @@ export function FormPrefill() {
   const { t } = useLanguage();
 
   const handlePersonaSelect = (persona: PersonaData) => {
-    updateFormData(persona.data);
+    updateFormData({
+      ...persona.data,
+      documents: [], // No local File objects, only S3 uploads
+      file_uploads: persona.data.file_uploads
+    });
     setIsOpen(false);
   };
 
@@ -179,7 +223,7 @@ export function FormPrefill() {
       </Button>
 
       {isOpen && (
-        <div className="absolute bottom-full mb-2 left-0 bg-white border border-gray-200 rounded-md shadow-lg z-50 min-w-[200px]">
+        <div className="absolute bottom-full mb-2 left-0 bg-white border border-gray-200 rounded-md shadow-lg z-50 min-w-[250px]">
           <div className="p-2">
             <div className="text-sm font-medium text-gray-700 mb-2">{t("formPrefill.selectPersona")}:</div>
             {personas.map((persona, index) => (
@@ -188,7 +232,7 @@ export function FormPrefill() {
                 onClick={() => handlePersonaSelect(persona)}
                 className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded-md block"
               >
-                {t(persona.nameKey)}
+                <span className="font-semibold">{persona.data.fullName}</span>: {t(persona.nameKey)}
               </button>
             ))}
           </div>

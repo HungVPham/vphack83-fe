@@ -231,7 +231,7 @@ export function CreditScoreResults({
     const labels: { [key: string]: { vi: string; en: string } } = {
       social_media: { vi: "Mạng Xã Hội", en: "Social Media" },
       shopping_history: { vi: "Lịch Sử Mua Sắm", en: "Shopping History" },
-      utility_bill: { vi: "Hóa Đơn Tiện Ích", en: "Utility Bill" },
+      bills: { vi: "Hóa Đơn Tiện Ích", en: "Utility Bill" },
       other: { vi: "Khác", en: "Other" },
     };
     return labels[classification]?.[language as "vi" | "en"] || classification;
@@ -469,13 +469,13 @@ export function CreditScoreResults({
                           {language === "vi" ? "Tên Tệp:" : "File Name:"}{" "}
                           {fileDetail.filename}
                         </h4>
-                        <p className="text-sm text-gray-600 capitalize">
+                        {/* <p className="text-sm text-gray-600 capitalize">
                           {language === "vi" ? "Loại:" : "Type:"}{" "}
                           {getClassificationLabel(
                             fileDetail.classification,
                             language
                           )}
-                        </p>
+                        </p> */}
                       </div>
                       <ChevronDown
                         className={`h-5 w-5 text-gray-400 transition-transform duration-200 ${

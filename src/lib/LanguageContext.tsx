@@ -164,7 +164,7 @@ const translations = {
 
     // Form Prefill
     'formPrefill.demoPersonas': 'Dữ liệu mẫu',
-    'formPrefill.selectPersona': 'Chọn persona',
+    'formPrefill.selectPersona': 'Chọn Profile',
     'formPrefill.persona.youngGenz': 'GenZ trẻ nghèo',
     'formPrefill.persona.middleAgedWorker': 'Nhân viên trung niên ly hôn',
     'formPrefill.persona.retiredNurse': 'Y tá nghỉ hưu',
@@ -419,7 +419,7 @@ const translations = {
 
     // Form Prefill
     'formPrefill.demoPersonas': 'Demo Personas',
-    'formPrefill.selectPersona': 'Select a persona',
+    'formPrefill.selectPersona': 'Select a Profile',
     'formPrefill.persona.youngGenz': 'Young GenZ Student',
     'formPrefill.persona.middleAgedWorker': 'Middle-aged Divorced Worker',
     'formPrefill.persona.retiredNurse': 'Retired Nurse',
