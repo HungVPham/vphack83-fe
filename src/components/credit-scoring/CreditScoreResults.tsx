@@ -224,18 +224,18 @@ export function CreditScoreResults({
     }
   };
 
-  const getClassificationLabel = (
-    classification: string,
-    language: string
-  ): string => {
-    const labels: { [key: string]: { vi: string; en: string } } = {
-      social_media: { vi: "Mạng Xã Hội", en: "Social Media" },
-      shopping_history: { vi: "Lịch Sử Mua Sắm", en: "Shopping History" },
-      bills: { vi: "Hóa Đơn Tiện Ích", en: "Utility Bill" },
-      other: { vi: "Khác", en: "Other" },
-    };
-    return labels[classification]?.[language as "vi" | "en"] || classification;
-  };
+  // const getClassificationLabel = (
+  //   classification: string,
+  //   language: string
+  // ): string => {
+  //   const labels: { [key: string]: { vi: string; en: string } } = {
+  //     social_media: { vi: "Mạng Xã Hội", en: "Social Media" },
+  //     shopping_history: { vi: "Lịch Sử Mua Sắm", en: "Shopping History" },
+  //     bills: { vi: "Hóa Đơn Tiện Ích", en: "Utility Bill" },
+  //     other: { vi: "Khác", en: "Other" },
+  //   };
+  //   return labels[classification]?.[language as "vi" | "en"] || classification;
+  // };
 
   // Helper function to get the appropriate LLM details based on language
   const getLLMDetails = (apiData: ApiResponse): LLMDetails[] => {

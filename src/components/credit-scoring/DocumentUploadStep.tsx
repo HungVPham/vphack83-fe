@@ -264,42 +264,42 @@ export function DocumentUploadStep() {
     }
   };
 
-  const handleSampleDataUpload = () => {
-    // Create a mock File object for display purposes
-    const mockFile = new File(
-      ["Sample social media data content"],
-      "test_document.txt",
-      {
-        type: "text/plain",
-      }
-    );
+  // const handleSampleDataUpload = () => {
+  //   // Create a mock File object for display purposes
+  //   const mockFile = new File(
+  //     ["Sample social media data content"],
+  //     "test_document.txt",
+  //     {
+  //       type: "text/plain",
+  //     }
+  //   );
 
-    const sampleFileData: UploadedFile = {
-      file: mockFile,
-      s3Key: "a9c713a3-c695-4239-9f52-e46ab7ad5bff.txt",
-      uuid: "sample-uuid",
-      uploading: false,
-      url: "https://example.com/test_document.txt", // Mock URL for sample data
-      contentType: "text/plain",
-      isS3: true,
-    };
+  //   const sampleFileData: UploadedFile = {
+  //     file: mockFile,
+  //     s3Key: "a9c713a3-c695-4239-9f52-e46ab7ad5bff.txt",
+  //     uuid: "sample-uuid",
+  //     uploading: false,
+  //     url: "https://example.com/test_document.txt", // Mock URL for sample data
+  //     contentType: "text/plain",
+  //     isS3: true,
+  //   };
 
-    // Add sample file to uploaded files list
-    setUploadedFiles((prev) => [...prev, sampleFileData]);
+  //   // Add sample file to uploaded files list
+  //   setUploadedFiles((prev) => [...prev, sampleFileData]);
 
-    // Update form data with sample file information
-    updateFormData({ 
-      documents: [...(formData.documents || []), mockFile],
-      file_uploads: [
-        ...(formData.file_uploads || []),
-        {
-          filename: "test_document.txt",
-          s3_key: "a9c713a3-c695-4239-9f52-e46ab7ad5bff.txt",
-          content_type: "text/plain",
-        },
-      ],
-    });
-  };
+  //   // Update form data with sample file information
+  //   updateFormData({ 
+  //     documents: [...(formData.documents || []), mockFile],
+  //     file_uploads: [
+  //       ...(formData.file_uploads || []),
+  //       {
+  //         filename: "test_document.txt",
+  //         s3_key: "a9c713a3-c695-4239-9f52-e46ab7ad5bff.txt",
+  //         content_type: "text/plain",
+  //       },
+  //     ],
+  //   });
+  // };
 
   // Handler for S3 file download
   const handleS3Download = async (uploadedFile: UploadedFile) => {
